@@ -7,6 +7,7 @@
     path: "{{ item.base }}"
     checksum_algorithm: sha1
   register: _rp_base
+  when: item.prepatched_src is not defined
 
 - name: "{{ item.name }} — fail when base ROM is missing"
   ansible.builtin.fail:
@@ -14,7 +15,9 @@
       Missing base ROM for "{{ item.name }}": {{ item.base }}
       (needs sha1 {{ item.base_sha1 }}). If you only have it zipped, extract the
       raw ROM first. See docs/rom-patches.md.
-  when: not _rp_base.stat.exists
+  when:
+    - item.prepatched_src is not defined
+    - not _rp_base.stat.exists
 
 - name: "{{ item.name }} — fail when base ROM is the wrong revision"
   ansible.builtin.fail:
@@ -23,6 +26,7 @@
       {{ item.base_sha1 }} for "{{ item.name }}". The patch is specific to that
       revision and would corrupt any other dump.
   when:
+    - item.prepatched_src is not defined
     - _rp_base.stat.exists
     - _rp_base.stat.checksum != item.base_sha1
 
@@ -38,6 +42,45 @@
     state: directory
     mode: "0755"
   when: not _rp_out.stat.exists
+
+- name: "{{ item.name }} — back up the original before in-place replace (once)"
+  # In-place entries (prepatched_src replacing an existing library ROM) keep the
+  # previous dump at <out>.bak; force:false so reruns never overwrite the backup.
+  ansible.builtin.copy:
+    src: "{{ item.out }}"
+    dest: "{{ item.out }}.bak"
+    remote_src: true
+    force: false
+    mode: "0644"
+  when:
+    - item.backup | default(false)
+    - _rp_out.stat.exists
+    - _rp_out.stat.checksum != item.out_sha1
+
+- name: "{{ item.name }} — install the pre-patched ROM (in place)"
+  ansible.builtin.copy:
+    src: "{{ item.prepatched_src }}"
+    dest: "{{ item.out }}"
+    mode: "0644"
+  when: >-
+    item.prepatched_src is defined
+    and (not _rp_out.stat.exists or _rp_out.stat.checksum != item.out_sha1)
+
+- name: "{{ item.name }} — verify the installed pre-patched ROM hash"
+  ansible.builtin.stat:
+    path: "{{ item.out }}"
+    checksum_algorithm: sha1
+  register: _rp_verify
+  when: item.prepatched_src is defined
+
+- name: "{{ item.name }} — fail when the installed ROM hash mismatches"
+  ansible.builtin.fail:
+    msg: >-
+      {{ item.out }} sha1 is {{ _rp_verify.stat.checksum }}, expected
+      {{ item.out_sha1 }} for "{{ item.name }}".
+  when:
+    - item.prepatched_src is defined
+    - _rp_verify.stat.checksum != item.out_sha1
 
 - name: "{{ item.name }} — apply patch (hash-verified)"
   # The applier asserts the base sha1 before patching and the output sha1 after,
@@ -58,7 +101,8 @@
       - "{{ item.out_sha1 }}"
   changed_when: true
   when: >-
-    not _rp_out.stat.exists or _rp_out.stat.checksum != item.out_sha1
+    item.prepatched_src is not defined
+    and (not _rp_out.stat.exists or _rp_out.stat.checksum != item.out_sha1)
 
 - name: "{{ item.name }} — report"
   ansible.builtin.debug:

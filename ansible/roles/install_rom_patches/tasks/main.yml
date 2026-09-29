@@ -31,6 +31,16 @@
       loop_control:
         loop_var: _msu_file
         label: "{{ _msu_file.path | basename }}"
+    - name: Restore originals that were replaced in place
+      ansible.builtin.shell: |
+        if [ -f "{{ item.out }}.bak" ]; then mv -f "{{ item.out }}.bak" "{{ item.out }}"; echo restored; fi
+      loop: "{{ dg_rom_patches }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: item.backup | default(false)
+      register: _rp_restore
+      changed_when: "'restored' in _rp_restore.stdout"
+
     - name: Report ROM patches reverted
       ansible.builtin.debug:
         msg: >-

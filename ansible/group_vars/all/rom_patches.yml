@@ -6,7 +6,10 @@
 # instead of producing a broken ROM. Opt-in; see docs/rom-patches.md.
 #
 # To add a hack: drop its .ips into roles/install_rom_patches/files/ and append
-# an entry below (name, base, base_sha1, ips, out, out_sha1).
+# an entry below (name, base, base_sha1, ips, out, out_sha1). For hacks that ship
+# a pre-patched ROM instead of a patch (or whose required base dump we don't
+# have), use prepatched_src + out_sha1 instead of base/ips — add backup: true
+# when `out` replaces an existing library ROM in place (original -> .bak).
 dg_rom_patches_revert: false
 
 dg_rom_patches:
@@ -118,3 +121,18 @@ dg_rom_patches:
     out_sha1: "b4dc5f38de7d4cb18c15a1055b84d04d67628fa3"
     msu_src: "{{ dg_roms_final_root }}/snes/romhack-patches/F-Zero CGP P3"
     msu_prefix: "F-Zero CGP P3"
+
+  # Sonic the Hedgehog Vol.2 v1.7b (Terwilf, romhacking.net/hacks/5026) — turns
+  # Somari into a full Sonic 1 NES port: redesigned levels, fixed physics +
+  # spin dash, new soundtrack (EPSM expansion audio on Mesen2, classic OST
+  # otherwise), Super Sonic with all 7 Chaos Emeralds, level select on Select,
+  # Konami-code secret menu. The patch's required base is the "Somari (Sonic
+  # Retro Version)" dump (CRC 51589DAF) — the box's Somari.nes is a different
+  # dump (CRC bc879cab), so Terwilf's prebuilt v1.7b ROM is installed IN PLACE
+  # over EmuDeck/roms/nes/Somari.nes (original kept as Somari.nes.bak).
+  # NAS-staged: ROMS_FINAL/nes/romhack-patches/ (pristine zip + extracted ROM).
+  - name: "Sonic the Hedgehog Vol.2 v1.7b (Somari hack)"
+    prepatched_src: "{{ dg_roms_final_root }}/nes/romhack-patches/Sonic Vol 2 (v1.7b).nes"
+    out: "{{ dg_rom_root }}/nes/Somari.nes"
+    out_sha1: "2b8ad733d7db788dd24325607686459fb9d38710"
+    backup: true

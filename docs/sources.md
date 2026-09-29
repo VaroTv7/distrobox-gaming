@@ -77,10 +77,12 @@ Patch files are **not** committed — grab them from the sites below.
 | SNES hacks (SMW, Zelda, Metroid, …) | [SMW Central](https://www.smwcentral.net/) · [RHDN](https://www.romhacking.net/) |
 | F-Zero Community Grand Prix P1/P2/P3 (SNES, MSU-1) | [RomHack Plaza](https://romhackplaza.org/romhacks/f-zero-community-grand-prix-cgp-super-nintendo-romhack) (guest-accessible via the Download modal's signed URLs; zips archived at `ROMS_FINAL/snes/romhack-patches/`) |
 | DKC GBA colour restoration (marc_max) | [RHDN](https://www.romhacking.net/) |
+| Sonic the Hedgehog Vol.2 v1.7b (NES, Somari hack, Terwilf) | [RHDN](https://www.romhacking.net/hacks/5026/) · [CDRomance mirror](https://cdromance.org/nes-roms/sonic-the-hedgehog-vol-2-hack/) (zip archived at `ROMS_FINAL/nes/romhack-patches/`) |
 | Naming hacks cleanly in ES-DE | [doc: esde-romhack-names.md](esde-romhack-names.md) |
 
 ---
 
 **See also** (commercial games / emulators, out of scope for this page):
 [NexusMods mod sets](nexusmods.md) · [PC racing games](pc-racing.md) ·
-[Windows/Wine installers](external-installers.md) · [Xenia (Xbox 360)](xenia-manager.md).
+[Windows/Wine installers](external-installers.md) · [Xenia (Xbox 360)](xenia-manager.md) ·
+[GT money cheats (GT1–GT6)](gt-money-cheats.md).

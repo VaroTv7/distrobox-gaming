@@ -3,7 +3,10 @@
 Data-driven patcher for GBA/console romhacks distributed as **IPS** or **BPS**
 patches. Each entry hard-patches a hash-verified base ROM and writes a finished
 ROM into a library the emulators already scan (EmuDeck `roms/`, `roms_mid/…`),
-so it plays with nothing to load at runtime.
+so it plays with nothing to load at runtime. Entries can also install a
+**pre-patched ROM** instead (`prepatched_src`, hash-verified copy; with
+`backup: true` it can replace a library ROM in place, keeping the original as
+`<name>.bak` and restoring it on revert).
 
 The applier asserts the **base** SHA-1 before touching a byte and the **output**
 SHA-1 after, so a wrong-region/revision base or a corrupt patch fails loudly
@@ -36,6 +39,7 @@ correct result.
 | **Super Metroid Redux (v1.5)** — large overhaul (map system, Project Base features, bugfixes). Main IPS only; the zip's optional add-on patches are not applied. | headerless No-Intro `Super Metroid (Japan, USA) (En,Ja).sfc` — `da957f0d…` (CRC `d63ed5f8`). | `Super Metroid Redux.sfc` (`0f4133f2…`, matches the author's prebuilt Redux ROM) |
 | **Return to Yoshi's Island — Demo 2 (Kaze Emanuar, N64)** — a **BPS** patch (NAS-staged `patch_src`), output into `roms_mid/n64` alongside the stock Mario ROMs. **HEAVY hack — emulator-picky** (see below). | `Super Mario 64 (USA) [!]` `.z64` — `9bef1128…` (read from the SM64 decomp-port baserom, the only verified copy on the box; never modified). | `Return to Yoshi's Island (Demo 2 v1.06).z64` (`4e91e237…`) |
 | **F-Zero Community Grand Prix P1/P2/P3 (CGP)** — 55 tracks (the 15 main, both BS leagues, 30 new), improved CPU, free boosting from lap 2, LEGEND difficulty. Three packs differing only in vehicle roster (see the group_vars comment); all three coexist. **MSU-1 audio** — see below. | headerless No-Intro `F-Zero (USA).sfc` — `d3efd32b…` (CRC `aa0e31de`), from `roms/snes/originals/` (the 1 MiB `roms/snes/F-Zero (USA).sfc` is a different dump — don't use it). | `F-Zero Community Grand Prix P1 (CGP).sfc` (`be5fc510…`), `…P2…` (`bf288290…`), `…P3…` (`b4dc5f38…`), each 2.5 MiB |
+| **Sonic the Hedgehog Vol.2 v1.7b (Terwilf, NES)** — turns Somari into a full Sonic 1 port: redesigned levels, fixed physics + spin dash, new soundtrack (EPSM expansion audio on Mesen2, classic OST otherwise), Super Sonic with all 7 emeralds, level select on Select, Konami-code secret menu. **Pre-patched ROM installed in place** (`prepatched_src`, no base check): the hack expects the "Somari (Sonic Retro Version)" dump (CRC `51589DAF`) but the box's Somari.nes is a different dump (CRC `bc879cab`). Original kept as `Somari.nes.bak`; revert restores it. | n/a — prebuilt ROM (NAS-staged `ROMS_FINAL/nes/romhack-patches/Sonic Vol 2 (v1.7b).nes`) | `nes/Somari.nes` **replaced in place** (`2b8ad733…`, 768 KiB) |
 
 ### F-Zero CGP — MSU-1 audio sidecars
 
