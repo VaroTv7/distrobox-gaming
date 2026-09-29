@@ -2,8 +2,18 @@
 
 User complaint: DuckStation's default **Bilinear** texture filter
 washes out GT2's hand-painted car and track art. Fix + best settings
-for both GT1 (SCUS-94949) and GT2 (SCUS-94455 Simulation, SCUS-94488
-Arcade).
+for both GT1 (SCUS-94194) and GT2 (SCUS-94488 Simulation, SCUS-94455
+Arcade — serials per redump; this doc had them swapped before
+2026-09-28).
+
+> **Why GUI changes "don't stick" for GT2:** DuckStation loads
+> `gamesettings/<SERIAL>.ini` ON TOP of the global `settings.ini` —
+> GT2 has a per-game profile, so the global texture filter you set in
+> the GUI is ignored while GT2 runs. And both files are Ansible-seeded
+> (`seed_configs`), so hand edits revert on the next playbook run.
+> Change `dg_duckstation_settings` / `dg_duckstation_per_game_settings`
+> in `ansible/group_vars/all/emulators.yml` and re-run
+> `ansible-playbook site.yml --tags configs` instead.
 
 ## Global DuckStation defaults (benefit every PS1 game)
 
@@ -12,9 +22,10 @@ Written by `seed_configs` → `duckstation.yml` → `dg_duckstation_settings`:
 | Section | Key | Value | Why |
 |---|---|---|---|
 | GPU | `Renderer` | `Vulkan` | NVIDIA ICD injected by launcher |
-| GPU | `ResolutionScale` | `8` | 4K+ on modern GPUs |
-| GPU | `TextureFilter` / `SpriteTextureFilter` | `JINC2` | 2025-2026 community consensus — sharp but smooth, preserves PS1 car/sprite detail without Bilinear's wash |
-| GPU | `Multisamples` | `2` | 2x MSAA, safe across library |
+| GPU | `ResolutionScale` | `9` | 240p × 9 = 2160 — exactly the 4K panel's height, so the final display scale is 1:1 vertically |
+| GPU | `TextureFilter` / `SpriteTextureFilter` | `Nearest` | User preference (2026-09-28): retro-crisp pixels, no smoothing at all |
+| GPU | `Multisamples` | `4` | 4x MSAA, free on the RTX 5090 |
+| Display | `Scaling` | `BilinearSharp` | Sharp-bilinear final upscale — crisp on non-integer (widescreen) stretches, no BilinearSmooth haze |
 | GPU | `TrueColor` | `true` | 24-bit output, kills banding |
 | GPU | `ScaledDithering` | `true` | Keep dither ON with TrueColor — Project Cerbera 2025 recalibration |
 | GPU | `DisableInterlacing` | `true` | Progressive output |
@@ -32,21 +43,46 @@ Deployed via `dg_duckstation_per_game_settings` to
 `~/.config/duckstation/gamesettings/<SERIAL>.ini`. Override the global
 template when a title-specific tradeoff is needed.
 
-### GT2 (SCUS-94455 Simulation, SCUS-94488 Arcade)
+### GT2 (SCUS-94488 Simulation, SCUS-94455 Arcade)
 
 | Key | Override | Why |
 |---|---|---|
-| `TextureFilter` / `SpriteTextureFilter` | `JINC2` | Core user complaint — sharp without raw-pixel aliasing |
+| `TextureFilter` / `SpriteTextureFilter` | `Nearest` | Core user preference — pixel-crisp textures, zero blur |
 | `PGXPDepthBuffer` / `PreserveProjFP` | **`false`** | Global true breaks GT2's skybox + distant road |
 | `WidescreenHack` | **`false`** | DuckStation's built-in hack stretches HUD. Use Silent's 16:9 Widescreen 2.0 cheat from [CookiePLMonster/Console-Cheat-Codes](https://github.com/CookiePLMonster/Console-Cheat-Codes/tree/master/PS1/Gran%20Turismo%202) via the DuckStation cheat manager instead — patches the viewport without breaking HUD |
-| `Multisamples` | `4` | 4x MSAA, GT2 handles it fine |
+| `Multisamples` | `8` | 8x MSAA, free on the RTX 5090 |
+| `PerSampleShading` | `true` | Cleaner AA on alpha-tested textures (fences, trees) |
 | `Console.EnableRAM8MB` | `true` | Pair with Silent's "Use 8 MB RAM for polygon buffers" cheat for full-LOD AI cars with no pop-in |
 | `Display.AspectRatio` | `16:9` | Output aspect (not the broken hack). Use in tandem with Silent's widescreen cheat |
 
-### GT1 (SCUS-94949)
+Verified 2026-09-28 that this chain produces **true widescreen, not a
+stretch**: with the cheat pack enabled (ids 0–11 via `dg_duckstation_cheats`,
+auto-loaded), wheels measured circular in side-on 3D views and HUD sits
+correctly at the frame edges. If the cheats ever fail to load (e.g. renamed
+.cht), the same settings would silently fall back to a stretched 4:3 frame —
+the tell is fat cars and an oval speedometer.
+### GT1 (SCUS-94194)
 
 Same template minus the GT2-specific 8 MB RAM hack. PGXP tradeoffs
-identical.
+identical. Widescreen uses DuckStation's built-in `WidescreenHack` (no
+community cheat exists for GT1) — it patches the projection matrix, so
+geometry is true 16:9; HUD may alias slightly.
+> Bug fixed 2026-09-28: the seed used to write this profile as
+> `SCUS-94949.ini` — a serial that does not exist — so GT1 silently ran
+> on global defaults until then. Serial verified against the disc itself
+> and the gamedb.
+## Collection audit (2026-09-28)
+Every other game in `roms/psx` was cross-checked against DuckStation's
+built-in game database (`gamedb.yaml`): all rated **NoIssues**, and the
+gamedb's per-title compat settings (CD speedup caps for Mega Man X4-X6/8,
+MGS, Einhander, SOTN, Brave Fencer; display offsets for GT2/MGS/R4/CMR2;
+`gpuPGXPTolerance=3` for Tekken 3; `gpuPGXPPreserveProjFP` for Ghost in
+the Shell; `gpuLineDetectMode` for Soul Blade) are **auto-applied** — and
+they win over our global seeds (`system.cpp` `LoadSettings()` applies
+gamedb AFTER user settings; only per-game `gamesettings/*.ini` and cheat
+overrides rank higher). So no additional per-game overrides are needed
+beyond GT1/GT2. CMR2 (`SLUS-01222.ini`) is a user-made GUI profile
+(cheats + 4:3 native), left as-is.
 
 ## Known mods / cheats worth knowing about (2026)
 
@@ -74,7 +110,7 @@ optional.
 ## Retextures — state of the art April 2026
 
 **No consolidated retexture pack** has shipped for GT2. DuckStation
-supports the drop-in system (`textures/SCUS-94455/` with hash-named
+supports the drop-in system (`textures/SCUS-94488/` with hash-named
 PNGs; `EnableTextureReplacements` already on globally so you're
 ready), but no community pack is published as of April 2026 — only
 WIP on [RetroGameTalk Personal Remasters thread](https://retrogametalk.com/threads/my-texture-pack-projects-personal-remasters-for-duckstation-pcsx2.15996/)
@@ -84,7 +120,7 @@ For GT3 (different game): the ["Finished" pack on GBAtemp](https://gbatemp.net/t
 
 If you want to dump-and-replace yourself, flip DuckStation's
 **Advanced → Dump Replaceable Textures** and play through — PNG
-dumps go to `textures/SCUS-94455/dumps/`. Rename/edit/move to
+dumps go to `textures/SCUS-94488/dumps/` (Simulation disc). Rename/edit/move to
 `replacements/` to apply.
 
 ## ISO notes

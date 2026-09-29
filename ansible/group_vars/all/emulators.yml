@@ -118,15 +118,18 @@ dg_duckstation_settings:
   - { section: BIOS, option: SearchDirectory,   value: "{{ dg_bios_root }}" }
   - { section: BIOS, option: PatchFastBoot,     value: "true" }
 
-  # GPU — 8x (4K+) Vulkan with sharp-but-smooth filtering. Bilinear
-  # (DuckStation default) washes out PS1 car/sprite detail; JINC2 is the
-  # consensus 2025-2026 replacement that keeps edges crisp without going
-  # full pixel-art. SpriteTextureFilter mirrors it for UI/HUD.
+  # GPU — 9x Vulkan (240p modes x9 = 2160, EXACTLY the 4K panel's height, so
+  # the final display scale is 1:1 vertically), with nearest-neighbor texture
+  # filtering. The user wants retro-crisp pixels, not smoothing — Bilinear
+  # (DuckStation default) washes out PS1 detail and JINC2 still smooths;
+  # Nearest keeps textures pixel-sharp. SpriteTextureFilter mirrors it for
+  # UI/HUD. Per-game inis under gamesettings/ OVERRIDE these — a global change
+  # in the GUI has no effect on games with a per-game profile (GT2 has one).
   - { section: GPU, option: Renderer,            value: Vulkan }
-  - { section: GPU, option: ResolutionScale,     value: "8" }
-  - { section: GPU, option: TextureFilter,       value: "JINC2" }
-  - { section: GPU, option: SpriteTextureFilter, value: "JINC2" }
-  - { section: GPU, option: Multisamples,        value: "2" }   # 2x MSAA safe across library
+  - { section: GPU, option: ResolutionScale,     value: "9" }
+  - { section: GPU, option: TextureFilter,       value: "Nearest" }
+  - { section: GPU, option: SpriteTextureFilter, value: "Nearest" }
+  - { section: GPU, option: Multisamples,        value: "4" }   # 4x MSAA free on the RTX 5090
   - { section: GPU, option: PerSampleShading,    value: "false" }
   - { section: GPU, option: TrueColor,           value: "true" }   # 24-bit output
   - { section: GPU, option: ScaledDithering,     value: "true" }   # keep dither alongside TrueColor
@@ -152,6 +155,9 @@ dg_duckstation_settings:
   # Display
   - { section: Display, option: VSync,              value: "true" }
   - { section: Display, option: OptimalFramePacing, value: "true" }
+  # Sharp-bilinear final upscale: crisp pixels on non-integer stretches
+  # (e.g. widescreen content), none of BilinearSmooth's haze.
+  - { section: Display, option: Scaling,            value: "BilinearSharp" }
 
   # Memory cards: PerGameTitle creates a separate pair of virtual memory
   # cards per game title, so GT1 saves don't share a card with GT2 etc.
@@ -180,20 +186,21 @@ dg_duckstation_settings:
 # running disc's serial matches the filename. Useful for per-game
 # renderer/PGXP tradeoffs that shouldn't apply globally.
 dg_duckstation_per_game_settings:
-  # Gran Turismo 2 — Simulation Disc (Silent's v1.2 patch).
+  # Gran Turismo 2 (Silent's v1.2 patch). Serials per redump: SCUS-94488 =
+  # SIMULATION disc (GT Mode — the one the user plays most), SCUS-94455 =
+  # ARCADE disc. (This file had them swapped until 2026-09-28.)
   # Research: https://projectcerbera.com/gt/2/duckstation/ (updated 2025-11-07)
   # + https://silentsblog.com/mods/gran-turismo-2/ + DuckStation wiki
-  # texture-replacement docs. User's complaint was "too smooth" default
-  # Bilinear filter; JINC2 is the community-consensus sharp-but-smooth
-  # replacement. The GT2 m3u bundles both the Simulation and Arcade
-  # discs; writing SCUS-94455 covers Simulation (the disc the user
-  # plays most). Arcade disc SCUS-94488 gets a sibling file below.
+  # texture-replacement docs. Texture filtering: Nearest on both texture and
+  # sprite paths — the user's stated preference is retro-crisp pixels, and
+  # these per-game files are why changing the GLOBAL filter in the GUI had no
+  # effect on GT2 (per-game wins over global).
   - serial: SCUS-94455
-    name: "Gran Turismo 2 (Simulation)"
+    name: "Gran Turismo 2 (Arcade)"
     settings:
-      # Texture filter — the user's specific fix
-      - { section: GPU, option: TextureFilter,       value: "JINC2" }
-      - { section: GPU, option: SpriteTextureFilter, value: "JINC2" }
+      # Texture filter — the user's specific fix: nearest neighbor, no blur
+      - { section: GPU, option: TextureFilter,       value: "Nearest" }
+      - { section: GPU, option: SpriteTextureFilter, value: "Nearest" }
       # GT2-specific PGXP: depth-buffer breaks GT2's skybox/road;
       # PreserveProjFP causes gaps in road LOD. Both OFF for GT2
       # even though the global defaults turn them on for other PS1 games.
@@ -206,9 +213,10 @@ dg_duckstation_per_game_settings:
       # the DuckStation-side hack and let the user enable the cheat
       # per-session via the cheat manager.
       - { section: GPU, option: WidescreenHack,      value: "false" }
-      # 4x MSAA is safe on GT2 and cleans car edges
-      - { section: GPU, option: Multisamples,        value: "4" }
-      - { section: GPU, option: PerSampleShading,    value: "false" }
+      # 8x MSAA + per-sample shading are free on the RTX 5090 and clean up
+      # car edges + alpha-tested textures (fences, trees)
+      - { section: GPU, option: Multisamples,        value: "8" }
+      - { section: GPU, option: PerSampleShading,    value: "true" }
       # TrueColor + ScaledDithering ON together: Cerbera's 2025
       # recalibration — 24-bit output but keep dithering on because
       # GT2's sky gradients rely on it.
@@ -232,17 +240,17 @@ dg_duckstation_per_game_settings:
       - { section: Display, option: AspectRatio,     value: "16:9" }
 
   - serial: SCUS-94488
-    name: "Gran Turismo 2 (Arcade)"
+    name: "Gran Turismo 2 (Simulation)"
     settings:
-      - { section: GPU, option: TextureFilter,       value: "JINC2" }
-      - { section: GPU, option: SpriteTextureFilter, value: "JINC2" }
+      - { section: GPU, option: TextureFilter,       value: "Nearest" }
+      - { section: GPU, option: SpriteTextureFilter, value: "Nearest" }
       - { section: GPU, option: PGXPDepthBuffer,        value: "false" }
       - { section: GPU, option: PGXPPreserveProjFP,     value: "false" }
       - { section: GPU, option: PGXPCulling,            value: "true" }
       - { section: GPU, option: PGXPTextureCorrection,  value: "true" }
       - { section: GPU, option: WidescreenHack,      value: "false" }
-      - { section: GPU, option: Multisamples,        value: "4" }
-      - { section: GPU, option: PerSampleShading,    value: "false" }
+      - { section: GPU, option: Multisamples,        value: "8" }
+      - { section: GPU, option: PerSampleShading,    value: "true" }
       - { section: GPU, option: TrueColor,           value: "true" }
       - { section: GPU, option: ScaledDithering,     value: "true" }
       - { section: GPU, option: DisableInterlacing,  value: "true" }
@@ -252,25 +260,28 @@ dg_duckstation_per_game_settings:
       - { section: Hacks, option: MaxVRAMWriteSplits,                      value: "1024" }
       - { section: Display, option: AspectRatio,     value: "16:9" }
 
-  # Gran Turismo 1 USA Rev 1 — SCUS-94949. Same filter upgrade and
-  # identical PGXP tradeoffs as GT2; fewer hacks needed. Widescreen
-  # relies on DuckStation's built-in WidescreenHack because no
+  # Gran Turismo 1 USA Rev 1 — SCUS-94194 (per the disc itself + gamedb;
+  # this seed used to target SCUS-94949, a serial that does not exist, so
+  # the GT1 profile silently never applied until 2026-09-28). Same filter
+  # upgrade and identical PGXP tradeoffs as GT2; fewer hacks needed.
+  # Widescreen relies on DuckStation's built-in WidescreenHack because no
   # community cheat pnach ships for GT1 (libretro DB, Silent's and
   # AeroWidescreen's repos all lack a GT1 widescreen — only 60fps
   # cheats). The built-in hack patches the projection matrix at render
   # time (not a display-level stretch), so 3D geometry renders 16:9;
   # HUD may show minor aliasing at high resolution scales.
-  - serial: SCUS-94949
+  - serial: SCUS-94194
     name: "Gran Turismo"
     settings:
-      - { section: GPU, option: TextureFilter,          value: "JINC2" }
-      - { section: GPU, option: SpriteTextureFilter,    value: "JINC2" }
+      - { section: GPU, option: TextureFilter,          value: "Nearest" }
+      - { section: GPU, option: SpriteTextureFilter,    value: "Nearest" }
       - { section: GPU, option: PGXPDepthBuffer,        value: "false" }
       - { section: GPU, option: PGXPPreserveProjFP,     value: "false" }
       - { section: GPU, option: PGXPCulling,            value: "true" }
       - { section: GPU, option: PGXPTextureCorrection,  value: "true" }
       - { section: GPU, option: WidescreenHack,      value: "true" }    # no GT1 cheat exists — use built-in
-      - { section: GPU, option: Multisamples,        value: "4" }
+      - { section: GPU, option: Multisamples,        value: "8" }
+      - { section: GPU, option: PerSampleShading,    value: "true" }
       - { section: GPU, option: TrueColor,           value: "true" }
       - { section: GPU, option: ScaledDithering,     value: "true" }
       - { section: GPU, option: DisableInterlacing,  value: "true" }
@@ -279,15 +290,20 @@ dg_duckstation_per_game_settings:
       - { section: Hacks, option: MaxVRAMWriteSplits,                      value: "1024" }
       - { section: Display, option: AspectRatio,     value: "16:9" }
 
-# Per-game DuckStation cheat deployments. Each entry copies a .cht file
-# (libretro format) from staging, renames it to <SERIAL>.cht inside
-# DuckStation's cheats dir, and flips the given cheat IDs from
-# enable=false to enable=true so AutoLoadCheats picks them up without
-# a GUI step.
+# Per-game DuckStation cheat deployments. Two shapes:
+#  - source + enable_ids: copies a .cht file (libretro format) from
+#    staging, renames it to <SERIAL>.cht inside DuckStation's cheats dir,
+#    and flips the given cheat IDs from enable=false to enable=true.
+#  - tag + content + enable_names: writes the inline DuckStation-native
+#    cheat text to cheats/<serial>_<tag>.cht (the loader glob-matches
+#    <serial>*.cht) and activates the named cheats via the per-game
+#    gamesettings ini ([Cheats] EnableCheats=true + repeated Enable lines)
+#    — the mechanism current DuckStation honors at boot.
 dg_duckstation_cheats:
-  # GT2 Simulation Disc v1.2 (Silent's-patched ISO the user runs).
-  # libretro cht ships the widescreen viewport fixes + screen-specific
-  # fixes by Aero / Silent. The game renders 4:3 geometry natively;
+  # GT2 (Silent's-patched v1.2 ISOs the user runs; SCUS-94455 = Arcade
+  # disc, SCUS-94488 = Simulation disc per redump — same widescreen pack
+  # applies to both). The libretro cht ships the widescreen viewport fixes
+  # + screen-specific fixes by Aero / Silent. The game renders 4:3 geometry natively;
   # without these cheats, `AspectRatio = 16:9` just stretches the 4:3
   # output horizontally. Cheats 0-11 are all widescreen-related:
   # 0 Additional Widescreen Fix, 1-2 Car Selection Fix (Arcade),
