@@ -281,7 +281,7 @@
       cfg = "{{ dg_xenia_manager_current }}/Config/config.json"
       if not os.path.isfile(cfg):
           print("xenia-zoom-no-config"); raise SystemExit
-      if subprocess.run(["pgrep", "-fi", "XeniaManager"], capture_output=True).returncode == 0:
+      if subprocess.run(["pgrep", "-f", "[X]eniaManager\\.exe"], capture_output=True).returncode == 0:
           print("xenia-zoom-skip-running"); raise SystemExit
       d = json.load(open(cfg))
       gv = (((d.get("ui") or {}).get("window") or {}).get("game_library") or {}).get("grid_view")
@@ -297,13 +297,16 @@
   changed_when: "'xenia-zoom-set' in _xenia_zoom.stdout"
 
 - name: Set Xenia Manager Wine prefix DPI (HiDPI UI)
-  # Raises LogPixels in the prefix registry via wine reg inside the box. Skips
+  # Enforces LogPixels in the prefix registry via wine reg inside the box. Skips
   # while Xenia Manager / Canary is running (wineserver would flush its own copy
-  # on exit). Note: Avalonia may ignore this for font scaling — see xenia.yml.
+  # on exit). The pgrep pattern uses a bracket so it cannot match this wrapper's
+  # own command line (a bare -f pattern self-matches and the task silently
+  # skipped forever — seen 2026-09-28). Keep dg_xenia_wine_dpi at 96: wine 11.18
+  # made Avalonia honor LogPixels, so 192 renders the UI at 2x.
   ansible.builtin.shell:
     cmd: |
       {{ dg_in_box }} sh -lc '
-        if pgrep -fi "XeniaManager|xenia_canary" >/dev/null 2>&1; then
+        if pgrep -f "[X]eniaManager\.exe|[x]enia_canary\.exe" >/dev/null 2>&1; then
           echo "xenia-dpi-skip-running"; exit 0
         fi
         export WINEPREFIX="{{ dg_xenia_prefix }}"

@@ -31,7 +31,17 @@ ansible-playbook site.yml                  # full setup
 ansible-playbook --syntax-check site.yml   # validate playbook syntax
 ansible-playbook install-sonic-p06.yml     # run optional P-06 setup
 desktop-file-validate ../config/desktop/rendered/*.desktop
+../scripts/check-box-sonames.sh            # after box updates: sweep for soname-broken AUR binaries
 ```
+
+**After every box package update** (`pacman -Syu` in the box), run
+`scripts/check-box-sonames.sh` and rebuild any AUR source packages it flags
+(`makepkg -srci` — `yay -S` only reinstalls the cached binary). Soname bumps
+(e.g. openexr 3.4 → 3.5 broke ES-DE + freeimage on 2026-09-28) leave AUR
+binaries linking the old library. The same sweep also audits the xenia-manager
+Wine prefix DPI (wine 11.18's DPI-awareness fix made Avalonia honor
+`LogPixels`; anything but 96 renders the UI oversized). See
+`docs/rebuild-runbook.md`.
 
 The macOS stack has its own checks, run from the repository root on a Mac:
 

@@ -140,11 +140,15 @@ config/registry on exit):
 - **`dg_xenia_grid_zoom`** (default `2`) — the game-library grid **icon zoom**
   (`Config/config.json` → `ui.window.game_library.grid_view.zoom`). This is the
   reliable size control; bigger icons are far easier to click.
-- **`dg_xenia_wine_dpi`** (default `192` = 200%) — the Wine prefix `LogPixels`
-  DPI. **Caveat:** Avalonia frequently *ignores* Wine's `LogPixels` for font
-  scaling, so this may not visibly enlarge the fonts; it's set as a sane HiDPI
-  baseline. If you need bigger fonts specifically, the in-app zoom slider + grid
-  zoom are the dependable path.
+- **`dg_xenia_wine_dpi`** (default `96`, **enforced** on every run while the
+  manager is closed; `0` = leave unmanaged) — the Wine prefix `LogPixels` DPI.
+  **History:** it used to be pinned at 192 (200%) as a HiDPI baseline because
+  Avalonia ignored Wine's `LogPixels`. Wine **11.18** (box update 2026-09-25)
+  shipped a "fix monitor DPI awareness" change, and since then Avalonia applies
+  `LogPixels` to the whole window — at 192 the manager rendered at 2x, sprawling
+  across monitors with unreachable buttons. Keep it at 96; the in-app zoom
+  slider + grid zoom are the dependable size controls.
+  `scripts/check-box-sonames.sh` also audits this value after box updates.
 
 Re-apply after changing either (Xenia Manager closed):
 

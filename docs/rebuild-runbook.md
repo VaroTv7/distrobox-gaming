@@ -171,6 +171,24 @@ bind mount are untouched.
   tolerates any single broken AUR package instead of aborting the
   whole run, so don't treat one AUR failure in the batch as a reason
   to stop and debug.
+- **AUR source packages break on soname bumps.** After a box
+  `pacman -Syu`, AUR packages built from source (`emulationstation-de`,
+  its dep `freeimage`, etc.) keep linking the OLD library soname and
+  fail with `error while loading shared libraries: lib<old>.so: cannot
+  open shared object file` (seen 2026-09-28: openexr 3.4 → 3.5 broke
+  ES-DE). Always run `scripts/check-box-sonames.sh` after a box update
+  and rebuild what it flags from source with makepkg — `yay -S` just
+  reinstalls the cached binary:
+  `cd /tmp && git clone https://aur.archlinux.org/<pkg>.git && cd <pkg> && makepkg -srci --noconfirm`
+  (rebuild `freeimage` first for ES-DE).
+- **Wine bumps can break behavior, not just linkage.** wine 11.18's "fix
+  monitor DPI awareness" made DPI-aware apps (Avalonia: Xenia Manager) honor
+  the prefix `LogPixels`, and the pinned 192 suddenly rendered the UI at 2x
+  with unreachable controls (2026-09-28). `install_xenia` now ENFORCES
+  `dg_xenia_wine_dpi: 96` on every run, and `scripts/check-box-sonames.sh`
+  audits the value after box updates — if it flags drift, re-run
+  `install-xenia.yml` with the manager closed. Details in
+  `docs/xenia-manager.md` ("UI sizing on the 4K panel").
 
 ## Safety
 
