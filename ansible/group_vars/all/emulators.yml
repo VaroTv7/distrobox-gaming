@@ -314,9 +314,70 @@ dg_duckstation_cheats:
     source: "{{ dg_libretro_cheats_dir }}/Sony - PlayStation/Gran Turismo 2 USA (v1.2) (Duckstation).cht"
     enable_ids: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
-  - serial: SCUS-94488   # Arcade disc — same cheat pack applies to shared viewport
+  - serial: SCUS-94488   # Simulation disc — same cheat pack applies to shared viewport
     source: "{{ dg_libretro_cheats_dir }}/Sony - PlayStation/Gran Turismo 2 USA (v1.2) (Duckstation).cht"
     enable_ids: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+  # Gran Turismo money cheats — user wants these permanent and on by
+  # default (2026-09-29). `content` deploys a DuckStation-native-format
+  # .cht as cheats/<serial>_<tag>.cht (the loader glob-matches
+  # <serial>*.cht), and `enable_names` writes
+  #   [Cheats] EnableCheats = true  +  repeated  Enable = <name>
+  # lines into gamesettings/<serial>.ini — on current DuckStation the
+  # game-INI enable list is what actually activates cheats at boot
+  # (verified against src/core/cheats.cpp: ReloadEnabledLists reads
+  # [Cheats] Enable string-list from the game settings layer only).
+  - serial: SCUS-94194   # Gran Turismo (USA)
+    tag: money
+    content: |
+      ; Gran Turismo USA — money cheat, on-by-default per user request.
+      ; Disc is redump Rev 1 / Greatest Hits (v1.1): EXE date 1998-06-17
+      ; verified from the ISO9660 tree of our CHD (v1.0 is 1998-04-15).
+      ; The v1.0 money address (0x09B864) does NOT apply to this disc.
+      [Money\1 Billion Credits (GT Mode)]
+      Type = Gameshark
+      Activation = EndFrame
+      9009B8F4 3B9ACA00
+    enable_names:
+      - 'Money\1 Billion Credits (GT Mode)'
+
+  # GT2 Simulation Disc v1.2 money cheat. NOTE: DuckStation's game
+  # settings layer for this disc set is anchored on SCUS-94455 (the
+  # Arcade serial is the disc-set leader — the log shows "Loading game
+  # settings from 'SCUS-94455.ini'" even when booting the Simulation
+  # disc), so the enable list must live in the 94455 ini while the .cht
+  # ships for both serials.
+  - serial: SCUS-94488   # Gran Turismo 2 Simulation Disc (USA v1.2)
+    tag: money
+    content: |
+      ; Gran Turismo 2 Simulation (USA v1.2) — money cheat.
+      ; v1.2-specific max-cash address (v1.0 codes are shifted — the
+      ; widely copied "Max Cash After One Race" does not apply here).
+      ; Writes 0x1525E0FF = 354,615,039 Cr, above the 99,999,999
+      ; display cap; EndFrame activation keeps it pinned, so purchases
+      ; never drain credits while the cheat is on.
+      [Money\Max Cash (GT Mode)]
+      Type = Gameshark
+      Activation = EndFrame
+      801D156A 1525
+      801D1568 E0FF
+    enable_names:
+      - 'Money\Max Cash (GT Mode)'
+
+  - serial: SCUS-94455   # GT2 disc-set leader — carries the [Cheats] enable
+    tag: money
+    content: |
+      ; Gran Turismo 2 (USA v1.2, disc-set leader file) — see the
+      ; SCUS-94488 money entry; identical cheat, deployed for both
+      ; serials because DuckStation reads the game ini from 94455 for
+      ; the whole set.
+      [Money\Max Cash (GT Mode)]
+      Type = Gameshark
+      Activation = EndFrame
+      801D156A 1525
+      801D1568 E0FF
+    enable_names:
+      - 'Money\Max Cash (GT Mode)'
 
 # Supermodel (Sega Model 3). The 0.3a binary resolves its tree under
 # ~/.supermodel absolutely (NOT ~/.config/supermodel — the AUR wrapper

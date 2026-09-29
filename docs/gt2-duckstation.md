@@ -61,17 +61,27 @@ auto-loaded), wheels measured circular in side-on 3D views and HUD sits
 correctly at the frame edges. If the cheats ever fail to load (e.g. renamed
 .cht), the same settings would silently fall back to a stretched 4:3 frame —
 the tell is fat cars and an oval speedometer.
+
 ### GT1 (SCUS-94194)
 
 Same template minus the GT2-specific 8 MB RAM hack. PGXP tradeoffs
 identical. Widescreen uses DuckStation's built-in `WidescreenHack` (no
 community cheat exists for GT1) — it patches the projection matrix, so
 geometry is true 16:9; HUD may alias slightly.
+
+### Money cheats
+
+Both GT1 and GT2 boot with a pinned max-credits cheat (on by default,
+Ansible-managed). Mechanism + the GT2 disc-set-ini gotcha and GT1 v1.1
+revision note: [gt-money-cheats.md](gt-money-cheats.md).
+
 > Bug fixed 2026-09-28: the seed used to write this profile as
 > `SCUS-94949.ini` — a serial that does not exist — so GT1 silently ran
 > on global defaults until then. Serial verified against the disc itself
 > and the gamedb.
+
 ## Collection audit (2026-09-28)
+
 Every other game in `roms/psx` was cross-checked against DuckStation's
 built-in game database (`gamedb.yaml`): all rated **NoIssues**, and the
 gamedb's per-title compat settings (CD speedup caps for Mega Man X4-X6/8,
