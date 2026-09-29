@@ -92,7 +92,7 @@ launcher_is_installable() {
     return 0
   fi
 
-  log "skip $(basename "$desktop"): $target is not installed in box $box"
+  log "skip $(basename "$desktop"): $target missing in box $box"
   return 1
 }
 

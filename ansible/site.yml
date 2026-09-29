@@ -103,6 +103,9 @@
     - { role: install_waverace_recomp,   tags: [waverace_recomp, never] }
     - { role: install_project_r,         tags: [project_r, never] }
     - { role: install_pilotwings_recomp, tags: [pilotwings_recomp, never] }
+    - { role: install_cbfd_recomp,       tags: [cbfd_recomp, never] }
+    - { role: install_dkr_recomp,        tags: [dkr_recomp, never] }
+    - { role: install_bar_recomp,        tags: [beetle_recomp, never] }
     - { role: install_smb_remastered,    tags: [smb_remastered, never] }
     - { role: install_gdiffuser,         tags: [gdiffuser, never] }
     - { role: install_mph_recomp,        tags: [mph_recomp, never] }

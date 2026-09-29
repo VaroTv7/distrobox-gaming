@@ -257,6 +257,21 @@ dg_ogm_games:
     category: recomp
     sgdb_query: "Pilotwings 64"
     github: "{{ dg_pw64_tarball_url | regex_replace('^https://(api\\.)?github\\.com/(repos/)?([^/]+/[^/]+?)(\\.git)?(/.*)?$', '\\3') }}"
+  - desktop_id: gaming-cbfd-recomp
+    id: cbfd-recomp
+    category: recomp
+    sgdb_query: "Conker's Bad Fur Day"
+    github: "{{ dg_cbfd_tarball_url | regex_replace('^https://(api\\.)?github\\.com/(repos/)?([^/]+/[^/]+?)(\\.git)?(/.*)?$', '\\3') }}"
+  - desktop_id: gaming-dkr-r
+    id: dkr-r
+    category: recomp
+    sgdb_query: "Diddy Kong Racing"
+    github: "{{ dg_dkr_asset_url | regex_replace('^https://(api\\.)?github\\.com/(repos/)?([^/]+/[^/]+?)(\\.git)?(/.*)?$', '\\3') }}"
+  - desktop_id: gaming-beetle-recomp
+    id: beetle-recomp
+    category: recomp
+    sgdb_query: "Beetle Adventure Racing"
+    github: "{{ dg_bar_zip_url | regex_replace('^https://(api\\.)?github\\.com/(repos/)?([^/]+/[^/]+?)(\\.git)?(/.*)?$', '\\3') }}"
   - desktop_id: gaming-unleashed-recomp
     id: unleashed-recomp
     category: recomp
