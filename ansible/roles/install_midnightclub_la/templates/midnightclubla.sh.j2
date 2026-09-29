@@ -29,4 +29,4 @@ export __GLX_VENDOR_LIBRARY_NAME="${__GLX_VENDOR_LIBRARY_NAME:-nvidia}"
 export SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1
 
 cd "$DIR"
-exec ./run.sh "$@"
+exec ./run.sh --resolution_scale={{ dg_mcla_resolution_scale }} --anisotropic_override={{ dg_mcla_aniso_override }} "$@"

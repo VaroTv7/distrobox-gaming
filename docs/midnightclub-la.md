@@ -38,6 +38,23 @@ launcher + install dir; your ISO is untouched).
   render-target path, `clear_memory_page_state=false`, `gpu_hot_page_frames=3`,
   strict-FIFO present for the VRR panel, etc.).
 
+## Rendering upgrades (2026-09-28)
+
+The launcher appends two rex cvars (`dg_mcla_resolution_scale` /
+`dg_mcla_aniso_override` in `group_vars/all/midnightclub_la.yml`):
+
+- `--resolution_scale=2` — internal draw resolution 1280x720 → 2560x1440,
+  presented on the 4K panel. MCLA is CPU-bound (GPU pass ~1.1 ms), so this is
+  free on the RTX 5090. Verified in the log:
+  `draw-scale swap sizing: packet=1280x720, src_scaled=2560x1440`.
+- `--anisotropic_override=5` — force 16x AF.
+
+If a scene ever renders wrong (post-processing/HUD glitches are the usual
+resolution-scale casualties), set `dg_mcla_resolution_scale: 1` and re-run the
+playbook. The 60 FPS timing patch is upstream-default-on (`MCLA_60FPS=0` opts
+out); the fullscreen/windowed state is whatever the window manager decides —
+Hyprland fullscreens it shortly after launch.
+
 Saves + settings live in `tools/midnightclubla/midnightclubla/user-data/`.
 Controls: gamepad works via SDL (8BitDo native); keyboard = Return/Start,
 Space/A, WASD stick, E accelerate.
