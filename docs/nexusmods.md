@@ -54,7 +54,7 @@ Steam appids resolved 2026-08-06 by scanning all libraries (189 apps).
 | WRC 5 | wrc5 | `354160` | 1 | ⚠️ flagged — not installed (DLC-unlock crack, see below) |
 | UNCHARTED: Legacy of Thieves | unchartedlegacyofthievescollection | `1659420` | 5 | ✅ 3/5 (see below) |
 | Yakuza 0 (Director's Cut) | yakuza0 | `2988580` | 10 | ⏸️ deferred (edition mismatch / RMM) |
-| The Witcher 3: Wild Hunt (Next-Gen) | witcher3 | `292030` | 12 | ✅ 11/12 (see below) |
+| The Witcher 3: Wild Hunt (Next-Gen) | witcher3 | `292030` | 13 | ✅ 12/13 (see below) |
 | WRC 7 | wrc7 | `621830` | 1 | ✅ 1/1 (EVOlution Mod 4.0, see below) |
 
 ### ✅ Revisited after later installs (2026-08-07)
@@ -612,6 +612,7 @@ drop in headlessly (no loader). Manifest-tracked (whole mod folders).
 | [657 Super Turbo Lighting (NGE)](https://www.nexusmods.com/witcher3/mods/657) · [1024 High Quality Faces](https://www.nexusmods.com/witcher3/mods/1024) | visual `mod*/` folders (NGE = Next-Gen build) |
 | [38 Increased Creature Loot](https://www.nexusmods.com/witcher3/mods/38) | FOMOD — installed the **`2_ICL`** variant (`modICL`) |
 | [3580 HD Monsters Reworked](https://www.nexusmods.com/witcher3/mods/3580) | ✅ installed the **v5.0 Next-Gen** edition (~7 GB): `modHDMonstersReworked5` (Part 1) + `modHDMonstersReworked5_Exp` (Part 2, DLC monsters) + `modHDMR5_LOD` (LOD optimization). Monster textures only — no conflict with the other mods. Extracts on NAS scratch, not `/tmp`. |
+| [11260 Brothers in Arms UE 4.0.1](https://www.nexusmods.com/witcher3/mods/11260) | ✅ the big bug-fix + restored-content collection (MerseyRockoff, Next-Gen 4.04, no dependencies per its `info.json`). **User-downloaded zip** (staged at `witcher3/11260/local/`, `no_download: true`). Unlike the others its archive top level is `{bin, dlc, mods}`, so it uses the role's `root_merge: true` path — merges all three trees onto the game root, including the mod-menu XML at `bin/config/r4game/user_config_matrix/pc/BrothersInArms.xml` (the generic `mod*/dlc*` detector would have nested `mods/mods/` and dropped `bin/`). Manifest records `FILE:bin/...` entries; revert deletes those too. Cooked-bundle mod (`useLooseScripts: false`) — texture mods unaffected; loose-script mods (e.g. Over 9000) mask a few overlapping BIA fixes, no crash risk. |
 | [1021 HD Reworked Project](https://www.nexusmods.com/witcher3/mods/1021) | ⏭️ skipped — **OldGen-only** (the whole page tops out at the OldGen "Ultimate" v12, ~9.5 GB; there is no Next-Gen version, and CDPR folded HD Reworked textures into the official Next-Gen update). Wrong edition for this Next-Gen game. |
 
 Note: script mods that touch shared scripts (AutoLoot, Weight) may need **Script
