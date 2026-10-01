@@ -49,18 +49,43 @@ template when a title-specific tradeoff is needed.
 |---|---|---|
 | `TextureFilter` / `SpriteTextureFilter` | `Nearest` | Core user preference — pixel-crisp textures, zero blur |
 | `PGXPDepthBuffer` / `PreserveProjFP` | **`false`** | Global true breaks GT2's skybox + distant road |
-| `WidescreenHack` | **`false`** | DuckStation's built-in hack stretches HUD. Use Silent's 16:9 Widescreen 2.0 cheat from [CookiePLMonster/Console-Cheat-Codes](https://github.com/CookiePLMonster/Console-Cheat-Codes/tree/master/PS1/Gran%20Turismo%202) via the DuckStation cheat manager instead — patches the viewport without breaking HUD |
+| `WidescreenHack` | **`false`** | DuckStation's built-in hack stretches HUD. Silent's 16:9 Widescreen 2.0 cheat (deployed + enabled by Ansible, see below) patches the viewport without breaking HUD |
 | `Multisamples` | `8` | 8x MSAA, free on the RTX 5090 |
 | `PerSampleShading` | `true` | Cleaner AA on alpha-tested textures (fences, trees) |
 | `Console.EnableRAM8MB` | `true` | Pair with Silent's "Use 8 MB RAM for polygon buffers" cheat for full-LOD AI cars with no pop-in |
 | `Display.AspectRatio` | `16:9` | Output aspect (not the broken hack). Use in tandem with Silent's widescreen cheat |
 
-Verified 2026-09-28 that this chain produces **true widescreen, not a
-stretch**: with the cheat pack enabled (ids 0–11 via `dg_duckstation_cheats`,
-auto-loaded), wheels measured circular in side-on 3D views and HUD sits
-correctly at the frame edges. If the cheats ever fail to load (e.g. renamed
-.cht), the same settings would silently fall back to a stretched 4:3 frame —
-the tell is fat cars and an oval speedometer.
+**Silent's GT2 cheat pack is deployed and on by default** (2026-10-01,
+`dg_duckstation_cheats` → `cheats/SCUS-944{55,88}_silent.cht`, codes
+verbatim from [Console-Cheat-Codes](https://github.com/CookiePLMonster/Console-Cheat-Codes/tree/master/PS1/Gran%20Turismo%202),
+NTSC-U 1.2 files): **16:9 Widescreen**, **60 FPS** (Silent's improved
+version — re-enables tire smoke + rear-view mirror), **Use 8MB RAM for
+polygon buffers**, **Full detail AI cars**, **Slightly higher draw
+distance**. Verified via boot log (`Enabled code from Cheats: ...` ×6
+incl. money). 60 FPS caveat per Silent: existing replays and rally-mode
+AI ghosts break — toggle `60 FPS` off in Game Properties → Cheats for
+those events.
+
+> **Activation trap (fixed 2026-10-01):** current DuckStation's boot-time
+> parser (`ParseFile` in `src/core/cheats.cpp`) only understands the
+> native `[Name]`-section .cht format. The libretro-format
+> `cheatN_desc`/`cheatN_enable` pack this repo used to deploy as
+> `<SERIAL>.cht` was never parsed at boot ("Unknown parameter" warnings,
+> zero codes loaded) — so the widescreen set was silently INACTIVE
+> despite the 2026-09-28 "verified" claim below, and GT2 ran stretched
+> 4:3. Same for the GUI-added `[Patches] Enable` list in
+> `SCUS-94455.ini` (60 FPS / Metric units / Widescreen 16:9 / 8MB RAM):
+> `patches.zip` is not bundled with the Arch package, so no game patches
+> ever load — that dead section was removed. The only live activation
+> mechanism is the per-game ini `[Cheats] Enable = <exact name>` list,
+> which the `silent` pack above uses.
+
+Verified 2026-10-01 that this chain produces **true widescreen, not a
+stretch**: the widescreen cheat now actually loads (see boot-log note
+above), wheels measured circular in side-on 3D views and HUD sits
+correctly at the frame edges. If the cheats ever fail to load (e.g.
+renamed .cht), the same settings would silently fall back to a
+stretched 4:3 frame — the tell is fat cars and an oval speedometer.
 
 ### GT1 (SCUS-94194)
 
@@ -68,6 +93,14 @@ Same template minus the GT2-specific 8 MB RAM hack. PGXP tradeoffs
 identical. Widescreen uses DuckStation's built-in `WidescreenHack` (no
 community cheat exists for GT1) — it patches the projection matrix, so
 geometry is true 16:9; HUD may alias slightly.
+
+**60 FPS (2026-10-01):** Silent's GT1 patch (asasega's original +
+Silent's tire-smoke/rear-view-mirror re-enables) is deployed as
+`cheats/SCUS-94194_60fps.cht` and enabled by default. Our disc is
+Rev 1 / Greatest Hits (v1.1), so the **NTSC-U 1.1** codes are used
+(`A60B6348`…) — the CHTDB pack's built-in "60 FPS" entry carries v1.0
+addresses (`A60B6318`…) that do not apply; ours is named
+`60 FPS (Silent)` so the two never collide.
 
 ### Money cheats
 
@@ -98,18 +131,24 @@ beyond GT1/GT2. CMR2 (`SLUS-01222.ini`) is a user-made GUI profile
 
 From **CookiePLMonster / Console-Cheat-Codes** (still active repo):
 
-- **16:9 Widescreen 2.0** — viewport patch, 21:9 variant included.
-- **60 FPS hack** — restores tire smoke + rear-view.
+- **16:9 Widescreen 2.0** — viewport patch, 21:9 variant included. ✅ deployed + on by default (16:9)
+- **60 FPS hack** — restores tire smoke + rear-view. ✅ deployed + on by default (GT1 and GT2)
 - **Use 8 MB RAM for polygon buffers** + **Full detail AI cars** —
-  pair with `EnableRAM8MB = true`.
-- **Fixed Event Generator** — fixes arcade missing tracks.
+  pair with `EnableRAM8MB = true`. ✅ deployed + on by default
+- **Slightly higher draw distance** — replay draw distance in races. ✅ deployed + on by default
+- **Fixed Event Generator** — fixes arcade missing tracks. Not enabled (gameplay-affecting)
 - **True Endurance**, **Metric Units**, **HUD toggle**, **Replay
-  cameras in race**, **BGM switch**.
+  cameras in race**, **BGM switch** — not enabled; opt-in via Game
+  Properties → Cheats (or add to `enable_names` in
+  `dg_duckstation_cheats` to make permanent)
 
 All ship as **DuckStation cheat codes** — no ISO patching, no
-serial/CRC change. Install by dropping the `.cht` file into
-`~/.config/duckstation/cheats/<SERIAL>.cht` and enabling via Game
-Properties → Cheats in the DuckStation GUI.
+serial/CRC change. To add one permanently: drop a native-format
+(`[Name]`-section) block into a `tag`+`content` entry in
+`dg_duckstation_cheats` and list the name under `enable_names`, then
+`ansible-playbook site.yml --tags configs`. Do NOT rely on the
+libretro-format packs or the GUI's [Patches] list — see the activation
+trap note above.
 
 **GT2 Combined Disc** (https://github.com/CookiePLMonster/GT2-Combined-Disc)
 — merges Arcade + Simulation into one disc. Repacks the ISO (new
