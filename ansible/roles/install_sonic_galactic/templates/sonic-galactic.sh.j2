@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -eu
-# Sonic Galactic launcher — Hatch-engine exe under wine-11.8 in a 4K Wine
-# virtual desktop (exclusive fullscreen otherwise renders in a corner of the
-# panel). Managed by install_sonic_galactic. 8BitDo via WineBus SDL.
+# Sonic Galactic launcher — Hatch-engine exe under wine-11.8, presented
+# fullscreen by gamescope (integer-scaled). Managed by install_sonic_galactic.
+# 8BitDo via WineBus SDL.
 
 EXE="{{ dg_sonicgalactic_install_dir }}/{{ dg_sonicgalactic_exe }}"
 if [ ! -f "$EXE" ]; then
@@ -31,5 +31,8 @@ export VK_ICD_FILENAMES="${VK_ICD_FILENAMES:-/usr/share/vulkan/icd.d/nvidia_icd.
 export SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1
 
 cd "{{ dg_sonicgalactic_install_dir }}"
-exec env -u PYTHONHOME -u PYTHONPATH "{{ dg_sonicgalactic_wine_bin_dir }}/wine" \
-  explorer /desktop=galactic,{{ dg_sonicgalactic_desktop_res }} "$EXE" "$@"
+# gamescope presents the game's small fixed window fullscreen, integer-scaled
+# (crisp pixels); also subsumes the Wine-virtual-desktop corner-render fix
+# (modeswitches happen inside gamescope's nested session).
+exec env -u PYTHONHOME -u PYTHONPATH gamescope {{ dg_sonicgalactic_gamescope_args }} \
+  -- "{{ dg_sonicgalactic_wine_bin_dir }}/wine" "$EXE" "$@"

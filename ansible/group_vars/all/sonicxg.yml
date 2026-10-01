@@ -21,4 +21,7 @@ dg_sonicxg_launcher: "{{ dg_box_home }}/bin/sonicxg"
 dg_sonicxg_save_dir: "{{ dg_box_home }}/.config/Sonic_XG"
 
 dg_sonicxg_main_output: "DP-1"
+# gamescope presents the game's small fixed window fullscreen, integer-scaled
+# (crisp pixels — GameMaker window_scale left at its default on purpose).
+dg_sonicxg_gamescope_args: "-W 3840 -H 2160 -S integer -f"
 dg_sonicxg_revert: false

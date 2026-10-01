@@ -111,4 +111,4 @@
         msg: >-
           Sonic Galactic {{ dg_sonicgalactic_version }} under Wine at
           {{ dg_sonicgalactic_install_dir }}; launcher {{ dg_sonicgalactic_bin }}
-          (4K virtual desktop). Revert: -e dg_sonicgalactic_revert=true.
+          (fullscreen via gamescope). Revert: -e dg_sonicgalactic_revert=true.

@@ -2,9 +2,9 @@
 # Sonic Galactic (Demo 2, patch 1) — fan-made classic-Sonic homage on the
 # Hatch engine (sonicgalactic.github.io). WINDOWS-only build (a Mac M1 build
 # exists, no Linux) → wine-11.8 with the established recipe (UseEGL=N GLX pin
-# + WineBus SDL for the 8BitDo), inside a 4K Wine VIRTUAL DESKTOP (the Sega
-# Rally Revo / SMS Remake lesson: exclusive fullscreen low modes render in a
-# corner of the panel). Opt-in role install_sonic_galactic. See
+# + WineBus SDL for the 8BitDo), fullscreen via gamescope integer scaling
+# (gamescope subsumes the Wine-virtual-desktop corner-render fix). Opt-in role
+# install_sonic_galactic. See
 # docs/sonic-fan-pack.md.
 #
 # Source: the user's downloaded zip on the NAS (SonicGalactic.exe +
@@ -20,7 +20,7 @@ dg_sonicgalactic_exe: "SonicGalactic.exe"
 dg_sonicgalactic_bin: "{{ dg_box_home }}/bin/sonic-galactic"
 dg_sonicgalactic_prefix: "{{ dg_box_home }}/wineprefixes/sonic-galactic"
 dg_sonicgalactic_wine_bin_dir: "{{ dg_pc_racing_wine_runner_root }}/wine-11.8/usr/bin"
-dg_sonicgalactic_desktop_res: "3840x2160"
+dg_sonicgalactic_gamescope_args: "-W 3840 -H 2160 -S integer -f"
 
 dg_sonicgalactic_winebus_registry:
   - { name: DisableHidraw, value: 1 }

@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 set -eu
 # Sonic XG launcher — official native Linux AppImage (GameMaker) on the RTX,
-# DP-1. Managed by install_sonicxg. Replays/options live in
-# ~/.config/Sonic_XG.
+# DP-1, presented fullscreen by gamescope (integer-scaled — the game's own
+# window is a fixed small size). Managed by install_sonicxg. Replays/options
+# live in ~/.config/Sonic_XG.
 
 BIN="{{ dg_sonicxg_bin }}"
 if [ ! -x "$BIN" ]; then
@@ -28,4 +29,5 @@ export VK_ICD_FILENAMES="${VK_ICD_FILENAMES:-/usr/share/vulkan/icd.d/nvidia_icd.
 export SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1
 
 cd "{{ dg_sonicxg_install_dir }}"
-exec "./$(basename "$BIN")" "$@"
+exec env -u PYTHONHOME -u PYTHONPATH gamescope {{ dg_sonicxg_gamescope_args }} \
+  -- "./$(basename "$BIN")" "$@"

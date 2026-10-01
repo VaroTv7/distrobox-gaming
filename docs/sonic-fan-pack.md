@@ -1,4 +1,4 @@
-# Sonic fan games: S3AIR, SMS Remake, Sonic XG, Sonic Galactic (Banjo-Kazooie moved to lighthouse.md)
+# Sonic fan games: S3AIR, SMS Remake, Sonic XG, Sonic Galactic, Sonic Overture, Sonic Legends (Banjo-Kazooie moved to lighthouse.md)
 
 Three installs from the 2026-09-04 batch (`docs/dkc-recomp.md` came the same
 week — it's fan-port season).
@@ -42,7 +42,10 @@ page (no releases API) — the user stages the zip at
 `ROMS_FINAL/PC/SonicXG_TA-Preview-V1.2-Linux.zip` and the role installs from
 there; bump `dg_sonicxg_version` + `dg_sonicxg_zip` on upgrades (ogm
 fingerprints the download page to badge new releases). FUSE for the AppImage
-is covered by `fuse2`/`fuse3` in `packages.yml`. Saves/replays/options live in
+is covered by `fuse2`/`fuse3` in `packages.yml`. Like the others it launches
+fullscreen via gamescope integer scaling (its GameMaker window is a fixed
+small size; `scale` in `~/.config/Sonic_XG/options.txt` stays at default).
+Saves/replays/options live in
 `~/.config/Sonic_XG/` — `uuid.bin` there owns your best times, do not lose it.
 Verified 2026-10-01: boots in the box, window on DP-1. Launcher
 `bin/sonicxg`, Walker "Sonic XG".
@@ -52,12 +55,39 @@ Verified 2026-10-01: boots in the box, window on DP-1. Launcher
 [Sonic Galactic](https://sonicgalactic.github.io/) — fan-made classic-Sonic
 homage on the Hatch engine, **Demo 2 patch 1**. **Windows-only build** (an M1
 Mac build exists, no Linux) → wine-11.8 with the standard recipe (UseEGL=N GLX
-pin, WineBus SDL for the 8BitDo) inside a **4K Wine virtual desktop**, same as
-SMS Remake. Source = the user's NAS zip
+pin, WineBus SDL for the 8BitDo) presented **fullscreen via gamescope integer
+scaling** (`dg_sonicgalactic_gamescope_args`), which also subsumes the old
+Wine-virtual-desktop corner-render fix. Source = the user's NAS zip
 (`ROMS_FINAL/PC/sonicgalactic-demo2-patch1-win.zip`, `SonicGalactic.exe` +
 `Data.hatch` inside). Bump `dg_sonicgalactic_version` + `_zip` on new demos;
 ogm fingerprints the download page. Verified 2026-10-01: boots under Wine and
 stays up. Launcher `bin/sonic-galactic`, Walker "Sonic Galactic".
+
+## Sonic Overture (`install_sonic_overture`)
+
+[Sonic Overture](https://sonic-overture-team.itch.io/sonic-overture-2023-demo)
+— Sonic Overture Team's fan-made classic-Sonic game on Clickteam Fusion 2.5
+(mmf2d3d9.dll, .mfx modules), **2023 demo** (`Overture95_Demo_v1`).
+**Windows-only** → wine-11.8, same recipe as Galactic (UseEGL=N GLX pin,
+WineBus SDL, gamescope integer-scaled fullscreen). Source = the user's NAS rar
+(`ROMS_FINAL/PC/Overture95_Demo_v1.rar`; top-level `Overture95_Demo_v1/`
+folder with `SonicOverture95.exe` inside). itch has no releases API — ogm
+fingerprints the itch page. Verified 2026-10-01: boots and runs under Wine
+(smoke-test note: `pgrep -x` can't match `SonicOverture95.exe` — Linux
+`comm` truncates to 15 chars — use `pgrep -f` or the truncated name).
+Launcher `bin/sonic-overture`, Walker "Sonic Overture".
+
+## Sonic Legends (`install_sonic_legends`)
+
+[Sonic Legends Trial Version](https://ultra-ring.itch.io/sonic-legends-trial-version)
+— ULTRA RING's other fan-made classic-Sonic game (same circle as Sonic XG),
+on GameMaker Studio 2 (`data.win`, `.vsh` shaders). **Windows-only** →
+wine-11.8, same recipe as Galactic/Overture (UseEGL=N GLX pin, WineBus SDL,
+gamescope integer-scaled fullscreen). Source = the user's NAS zip
+(`ROMS_FINAL/PC/Sonic Legends.zip`, files at zip root — note the exe name has
+a space). itch has no releases API — ogm fingerprints the itch page.
+Verified 2026-10-01: boots and runs under Wine. Launcher
+`bin/sonic-legends`, Walker "Sonic Legends".
 
 ## Banjo-Kazooie
 
