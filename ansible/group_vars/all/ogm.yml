@@ -331,6 +331,16 @@ dg_ogm_games:
   - { desktop_id: gaming-sonic-galactic, id: sonic-galactic, category: fangame,
       sgdb_query: "Sonic Galactic",
       web_url: "https://sonicgalactic.github.io/download.html" }
+  # Sonic Overture 2023 demo (Clickteam Fusion 2.5) — Windows-only under Wine.
+  # itch page; upload filename has no version — fingerprint mode.
+  - { desktop_id: gaming-sonic-overture, id: sonic-overture, category: fangame,
+      sgdb_query: "Sonic Overture",
+      web_url: "https://sonic-overture-team.itch.io/sonic-overture-2023-demo" }
+  # Sonic Legends Trial (GameMaker Studio 2, ULTRA RING) — Windows-only under
+  # Wine. itch page; fingerprint mode.
+  - { desktop_id: gaming-sonic-legends, id: sonic-legends, category: fangame,
+      sgdb_query: "Sonic Legends",
+      web_url: "https://ultra-ring.itch.io/sonic-legends-trial-version" }
   # itch page; upload filename has no version — fingerprint mode.
   - { desktop_id: gaming-openbor-sor-troubles-in-japan, id: openbor-sor-troubles-in-japan,
       category: fangame, sgdb_query: "Streets of Rage",
