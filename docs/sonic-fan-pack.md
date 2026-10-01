@@ -1,4 +1,4 @@
-# Sonic fan games: S3AIR, SMS Remake (Banjo-Kazooie moved to lighthouse.md)
+# Sonic fan games: S3AIR, SMS Remake, Sonic XG, Sonic Galactic (Banjo-Kazooie moved to lighthouse.md)
 
 Three installs from the 2026-09-04 batch (`docs/dkc-recomp.md` came the same
 week — it's fan-port season).
@@ -30,6 +30,34 @@ too). Source = the user's NAS zip (`v1-9-rev4_Sonic_SMS_Remake.zip`, single
 exe inside). Launcher `bin/sonic-sms-remake`, Walker "Sonic SMS Remake".
 Sonic 2 SMS and Sonic 3 SMS remakes exist on the same site — drop their zips
 next to this one and clone the role data if wanted.
+
+## Sonic XG (`install_sonicxg`)
+
+[Sonic eXtended Genesis](https://sonic-xg.github.io/) — ULTRA RING's fan
+project (with the original 2001/2012 devs' blessing): an alternate-take
+Knuckles campaign acting as an epilogue to the Death Egg Saga. Currently the
+**Time Attack Preview v1.2**. **Official native Linux AppImage** (GameMaker
+runner), no ROM required. Distribution is Google Drive links off the download
+page (no releases API) — the user stages the zip at
+`ROMS_FINAL/PC/SonicXG_TA-Preview-V1.2-Linux.zip` and the role installs from
+there; bump `dg_sonicxg_version` + `dg_sonicxg_zip` on upgrades (ogm
+fingerprints the download page to badge new releases). FUSE for the AppImage
+is covered by `fuse2`/`fuse3` in `packages.yml`. Saves/replays/options live in
+`~/.config/Sonic_XG/` — `uuid.bin` there owns your best times, do not lose it.
+Verified 2026-10-01: boots in the box, window on DP-1. Launcher
+`bin/sonicxg`, Walker "Sonic XG".
+
+## Sonic Galactic (`install_sonic_galactic`)
+
+[Sonic Galactic](https://sonicgalactic.github.io/) — fan-made classic-Sonic
+homage on the Hatch engine, **Demo 2 patch 1**. **Windows-only build** (an M1
+Mac build exists, no Linux) → wine-11.8 with the standard recipe (UseEGL=N GLX
+pin, WineBus SDL for the 8BitDo) inside a **4K Wine virtual desktop**, same as
+SMS Remake. Source = the user's NAS zip
+(`ROMS_FINAL/PC/sonicgalactic-demo2-patch1-win.zip`, `SonicGalactic.exe` +
+`Data.hatch` inside). Bump `dg_sonicgalactic_version` + `_zip` on new demos;
+ogm fingerprints the download page. Verified 2026-10-01: boots under Wine and
+stays up. Launcher `bin/sonic-galactic`, Walker "Sonic Galactic".
 
 ## Banjo-Kazooie
 

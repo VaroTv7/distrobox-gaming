@@ -320,6 +320,17 @@ dg_ogm_games:
   - { desktop_id: gaming-sonic-sms-remake, id: sonic-sms-remake, category: fangame,
       sgdb_query: "Sonic the Hedgehog (8-bit)",
       web_url: "https://sonic-sms-remake.blogspot.com/" }
+  # Sonic XG (eXtended Genesis) — ULTRA RING's S3&K-epilogue fangame. Downloads
+  # are Google Drive links off the download page (no releases API) → fingerprint
+  # mode: new release = new Drive file IDs in the page HTML.
+  - { desktop_id: gaming-sonicxg, id: sonicxg, category: fangame,
+      sgdb_query: "Sonic XG",
+      web_url: "https://sonic-xg.github.io/download.html" }
+  # Sonic Galactic (Hatch engine) — Windows-only build under Wine. Downloads
+  # are links off the project page (no releases API) → fingerprint mode.
+  - { desktop_id: gaming-sonic-galactic, id: sonic-galactic, category: fangame,
+      sgdb_query: "Sonic Galactic",
+      web_url: "https://sonicgalactic.github.io/download.html" }
   # itch page; upload filename has no version — fingerprint mode.
   - { desktop_id: gaming-openbor-sor-troubles-in-japan, id: openbor-sor-troubles-in-japan,
       category: fangame, sgdb_query: "Streets of Rage",
