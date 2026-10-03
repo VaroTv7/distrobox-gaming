@@ -272,6 +272,13 @@ dg_ogm_games:
     category: recomp
     sgdb_query: "Beetle Adventure Racing"
     github: "{{ dg_bar_zip_url | regex_replace('^https://(api\\.)?github\\.com/(repos/)?([^/]+/[^/]+?)(\\.git)?(/.*)?$', '\\3') }}"
+  # Banjo-Tooie Recompiled — Windows-only alpha under Wine; upstream tags are
+  # all prereleases, so update checks must list releases (not /latest).
+  - desktop_id: gaming-banjotooie-recomp
+    id: banjotooie-recomp
+    category: recomp
+    sgdb_query: "Banjo-Tooie"
+    github: "{{ dg_btooie_zip_url | regex_replace('^https://(api\\.)?github\\.com/(repos/)?([^/]+/[^/]+?)(\\.git)?(/.*)?$', '\\3') }}"
   - desktop_id: gaming-unleashed-recomp
     id: unleashed-recomp
     category: recomp
@@ -341,6 +348,23 @@ dg_ogm_games:
   - { desktop_id: gaming-sonic-legends, id: sonic-legends, category: fangame,
       sgdb_query: "Sonic Legends",
       web_url: "https://ultra-ring.itch.io/sonic-legends-trial-version" }
+  # Sonic Rush Rerun (Unity) — Windows-only under Wine. GameJolt page;
+  # fingerprint mode (no releases API).
+  - { desktop_id: gaming-sonic-rush-rerun, id: sonic-rush-rerun, category: fangame,
+      sgdb_query: "Sonic Rush",
+      web_url: "https://gamejolt.com/games/sonicrushrerun/1030374" }
+  # Sonic Dimensions (Clickteam Fusion, Phantom-Radea) — Windows-only under
+  # Wine. Canonical page is the author's DeviantArt post (5.1.0 demo; 5.1.1 in
+  # development) — fingerprint mode.
+  - { desktop_id: gaming-sonic-dimensions, id: sonic-dimensions, category: fangame,
+      sgdb_query: "Sonic Dimensions",
+      web_url: "https://www.deviantart.com/phantom-radea/art/Sonic-Dimensions-5-1-1-In-Development-5-1-0-DEMO-963814256" }
+  # Sonic and the Moon Facility (Clickteam Fusion 2.5, StarDrop) — cancelled
+  # project; final 2025-02-10 build under Wine. GameJolt page; fingerprint
+  # mode (discontinued — badge unlikely to ever fire).
+  - { desktop_id: gaming-moon-facility, id: moon-facility, category: fangame,
+      sgdb_query: "Sonic and the Moon Facility",
+      web_url: "https://gamejolt.com/games/sonicmoonfacility/975042" }
   # itch page; upload filename has no version — fingerprint mode.
   - { desktop_id: gaming-openbor-sor-troubles-in-japan, id: openbor-sor-troubles-in-japan,
       category: fangame, sgdb_query: "Streets of Rage",

@@ -1,4 +1,4 @@
-# Sonic fan games: S3AIR, SMS Remake, Sonic XG, Sonic Galactic, Sonic Overture, Sonic Legends (Banjo-Kazooie moved to lighthouse.md)
+# Sonic fan games: S3AIR, SMS Remake, Sonic XG, Sonic Galactic, Sonic Overture, Sonic Legends, Rush Rerun, Dimensions, Moon Facility (Banjo-Kazooie moved to lighthouse.md)
 
 Three installs from the 2026-09-04 batch (`docs/dkc-recomp.md` came the same
 week — it's fan-port season).
@@ -88,6 +88,46 @@ gamescope integer-scaled fullscreen). Source = the user's NAS zip
 a space). itch has no releases API — ogm fingerprints the itch page.
 Verified 2026-10-01: boots and runs under Wine. Launcher
 `bin/sonic-legends`, Walker "Sonic Legends".
+
+## Sonic Rush Rerun (`install_sonic_rush_rerun`)
+
+[Sonic Rush Rerun](https://gamejolt.com/games/sonicrushrerun/1030374)
+— fan reimagining of the Nintendo DS Sonic Rush, on **Unity**
+(MonoBleedingEdge + FMOD). **Anniversary Demo** (Sonic Rush 20th
+anniversary, the newest demo as of 2026-10). **Windows-only** → wine-11.8,
+same recipe as Galactic (UseEGL=N GLX pin, WineBus SDL, gamescope
+integer-scaled fullscreen). Source = the user's NAS rar
+(`ROMS_FINAL/PC/sonic-rush-rerun-anniversary-demo.rar`; top-level
+`Sonic Rush Rerun/` folder, exe `Sonic Rush Rerun.exe`). GameJolt has no
+releases API — ogm fingerprints the GameJolt page. Launcher
+`bin/sonic-rush-rerun`, Walker "Sonic Rush Rerun".
+
+## Sonic Dimensions (`install_sonic_dimensions`)
+
+[Sonic Dimensions](https://www.deviantart.com/phantom-radea/art/Sonic-Dimensions-5-1-1-In-Development-5-1-0-DEMO-963814256)
+— Phantom-Radea's 2D Sonic fangame on **Clickteam Fusion** (supersound.dll).
+**5.1.0 demo** — the newest public build (5.1.1 in development per the same
+DeviantArt post, which is the canonical distribution page). **Windows-only**
+→ wine-11.8, same recipe (UseEGL=N GLX pin, WineBus SDL, gamescope
+integer-scaled fullscreen). Source = the user's NAS rar
+(`ROMS_FINAL/PC/Sonic Dimensions 5.1.0.rar`; top-level `Sonic Dimensions/`
+folder, exe `Sonic Dimensions 5.1.0.exe` — note the exe name embeds the
+version, so a future 5.1.1 update needs `dg_sonicdimensions_exe` bumped).
+ogm fingerprints the DeviantArt page. Launcher `bin/sonic-dimensions`,
+Walker "Sonic Dimensions".
+
+## Sonic and the Moon Facility (`install_moon_facility`)
+
+[Sonic and the Moon Facility](https://gamejolt.com/games/sonicmoonfacility/975042)
+— StarDrop's 2D Sonic fangame on **Clickteam Fusion 2.5** (mmf2d3d9.dll,
+.mfx modules). The project was **cancelled**; the ~90%-complete final build
+(2025-02-10, "Final 2") is what we install — no further updates expected.
+**Windows-only** → wine-11.8, same recipe (UseEGL=N GLX pin, WineBus SDL,
+gamescope integer-scaled fullscreen). Source = the user's NAS zip
+(`ROMS_FINAL/PC/sonic-and-the-moon-facility-last-build.zip`; top-level
+`Sonic and The Moon Facility (Final 2)/` folder, exe
+`Sonic and The Moon Facility.exe`). ogm fingerprints the GameJolt page.
+Launcher `bin/moon-facility`, Walker "Sonic and the Moon Facility".
 
 ## Banjo-Kazooie
 
