@@ -26,6 +26,7 @@ data are provided or linked here** — recomps and hacks need your own legal dum
 | Pilotwings 64: Recompiled | N64Recomp + RT64 native Linux build | [danielgomesvieira2000/pilotwings-64-recomp](https://github.com/danielgomesvieira2000/pilotwings-64-recomp) · [doc](pilotwings-recomp.md) |
 | Conker's Bad Fur Day: Recompiled | N64Recomp + RT64 native Linux build | [sciaschi/CBFD-Recompiled](https://github.com/sciaschi/CBFD-Recompiled) · [doc](cbfd-recomp.md) |
 | DKR-R (Diddy Kong Racing Recompiled) | N64Recomp + RT64 native Linux AppImage | [ThatGuyMcd/DKR-R](https://github.com/ThatGuyMcd/DKR-R) · [doc](dkr-r.md) |
+| Banjo-Tooie Recompiled | N64Recomp + RT64 (Windows alpha under Wine) | [some-scurvy-dog/BanjoTooieRecompiled](https://github.com/some-scurvy-dog/BanjoTooieRecompiled) · [doc](banjotooie-recomp.md) |
 | Beetle Adventure Racing! Recompiled | N64Recomp + RT64 (Windows build under Wine) | [danielgomesvieira2000/beetle-adventure-racing-recomp](https://github.com/danielgomesvieira2000/beetle-adventure-racing-recomp) · [doc](beetle-recomp.md) |
 | Road Rash 64 Recompiled | N64 recompilation (native Linux AppImage) | [linkssy2/RoadRash64Recompiled](https://github.com/linkssy2/RoadRash64Recompiled) · [doc](roadrash64.md) |
 | Perfect Dark | N64 decomp PC port | [DabDavis/perfect-dark-dabs-mod](https://github.com/DabDavis/perfect-dark-dabs-mod) · [doc](perfect-dark.md) |
