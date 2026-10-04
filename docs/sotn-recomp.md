@@ -30,21 +30,32 @@ on the RTX. Requires the .NET 10 runtime (box has `Microsoft.NETCore.App 10.0.11
 
 ## The disc
 
-The recomp needs these exact files in `<install>/disc/`:
+The recomp needs these exact files in `<install>/disc/` (names per the upstream
+README, rewritten 2026-09-27 — the `"(USA)"` in the bin names is REQUIRED):
 
 ```
-Castlevania - Symphony of the Night (Track 1).bin   (MODE2/2352 data)
-Castlevania - Symphony of the Night (Track 2).bin   (CD audio)
-Castlevania - Symphony of the Night (USA).cue
+Castlevania - Symphony of the Night (USA) (Track 1).bin   (MODE2/2352 data)
+Castlevania - Symphony of the Night (USA) (Track 2).bin   (CD audio)
+Castlevania - Symphony of the Night (USA).cue             (with INDEX lines)
 ```
 
-This box has the NTSC-U rip split across two redump tracks whose byte total
-equals the CHD exactly (Track 1 in `psx-usa/…`, Track 2 in `psx/…`), so the role
-**symlinks** them in (no copy — the ~583 MB stays on the NAS) and writes the cue.
-Point `dg_sotn_recomp_track1_src` / `dg_sotn_recomp_track2_src` at your own rip
-if the layout differs. A CHD can be split with `chdman extractcd` + a bin
-splitter if you only have the compressed image (note: this build's `chdman
---splitbin` errored, so split with `binmerge` instead).
+The role **symlinks** the EmuDeck rip (`roms/psx/Castlevania Symphony of the
+Night (US)/`) in VERBATIM — filenames and cue content already match the spec
+byte-for-byte. Override `dg_sotn_recomp_disc_src_dir` if your layout differs.
+A CHD also works upstream (ours is
+`ROMS_FINAL/psx/Castlevania - Symphony of the Night (USA).chd`).
+
+**Root cause of the 2026-08 crash park (issue #9):** the old role staged bin
+names WITHOUT `"(USA)"` and its self-written cue referenced those names — the
+RecompOne `CueBinImage` parser only registers tracks on `INDEX 01` lines and
+emits exactly our `read outside data track` + `packs=0` when the disc layout
+doesn't line up, killing the game ~2s after start. **Fixed 2026-10-03** by
+staging the README-verbatim set: boot-verified — GL 4.5 context on the RTX
+5090, disc reads OK, and the game reaches its interactive first-run legal
+screen instead of crashing (4 deterministic `read outside data track` probe
+warnings at startup are benign — same LBAs every boot). Note: the legal
+screen's "I understand" button needs a real mouse click (ImGui modal; wtype
+keyboard injection doesn't press it).
 
 ## Disc auto-load
 

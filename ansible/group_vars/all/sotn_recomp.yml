@@ -3,10 +3,16 @@
 #
 # Ships as a prebuilt, framework-dependent .NET 10 app (OpenGL via Silk.NET/GLFW,
 # native SDL2/OpenAL bundled). It needs the user's legally-owned NTSC-U PS1 disc
-# as a 2-track split bin/cue placed in <install>/disc/ with exact names. This box
-# has a clean CHD plus the two matching redump tracks (Track 1 in psx-usa,
-# Track 2 in psx — their byte total equals the CHD exactly), so the role
-# symlinks those in and writes the cue. See docs/sotn-recomp.md.
+# in <install>/disc/ with EXACT names per the upstream README (rewritten
+# 2026-09-27): split bin/cue named "Castlevania - Symphony of the Night (USA)
+# (Track N).bin" + "(USA).cue" with explicit INDEX lines — or a CHD.
+#
+# Root cause of the 2026-08 crash park (issue #9: "packs=0", "read outside
+# data track"): the role staged bin names WITHOUT "(USA)" — the RecompOne
+# CueBinImage parser only registers tracks from INDEX 01 lines and the
+# README-spec naming/cue is what the app validates. Fix: symlink the EmuDeck
+# rip VERBATIM (exact README names + cue with INDEX lines, byte-for-byte).
+# See docs/sotn-recomp.md.
 
 dg_sotn_recomp_root: "{{ dg_box_home }}/Games/sotn-recomp"
 dg_sotn_recomp_install_dir: "{{ dg_sotn_recomp_root }}"
@@ -21,10 +27,16 @@ dg_sotn_recomp_asset_name: "SymphonyRecomp-{{ dg_sotn_recomp_version }}-linux-x6
 dg_sotn_recomp_asset_url: "https://github.com/BlackLabelHQ/SymphonyRecomp/releases/download/{{ dg_sotn_recomp_version }}/{{ dg_sotn_recomp_asset_name }}"
 dg_sotn_recomp_asset_sha256: 35cabee8e378ad0c13615ec8bdbb4fb9d651f92a42a3a4c0435dbdfe64be56d5
 
-# Owned NTSC-U SotN disc tracks (redump split). The role symlinks these into
-# disc/ under the exact names SymphonyRecomp requires. Override for your layout.
-dg_sotn_recomp_track1_src: "{{ dg_roms_final_root }}/psx-usa/Castlevania - Symphony of the Night (USA)/Castlevania - Symphony of the Night (USA) (Track 1).bin"
-dg_sotn_recomp_track2_src: "{{ dg_roms_final_root }}/psx/Castlevania - Symphony of the Night (USA) (Track 2)_dup1.bin"
+# Owned NTSC-U SotN rip (redump split bin/cue), symlinked VERBATIM into disc/
+# — the filenames + cue content already match the upstream README spec
+# exactly. A CHD also works ({{ dg_roms_final_root }}/psx/Castlevania -
+# Symphony of the Night (USA).chd) but the documented bin/cue path is what we
+# stage. Override for your layout.
+dg_sotn_recomp_disc_src_dir: "{{ dg_rom_root }}/psx/Castlevania Symphony of the Night (US)"
+dg_sotn_recomp_disc_files:
+  - "Castlevania - Symphony of the Night (USA).cue"
+  - "Castlevania - Symphony of the Night (USA) (Track 1).bin"
+  - "Castlevania - Symphony of the Night (USA) (Track 2).bin"
 
 # The .NET 10 runtime is required (framework-dependent build).
 dg_sotn_recomp_packages:
