@@ -19,7 +19,7 @@ dg_sonicoverture_exe: "SonicOverture95.exe"
 dg_sonicoverture_bin: "{{ dg_box_home }}/bin/sonic-overture"
 dg_sonicoverture_prefix: "{{ dg_box_home }}/wineprefixes/sonic-overture"
 dg_sonicoverture_wine_bin_dir: "{{ dg_pc_racing_wine_runner_root }}/wine-11.8/usr/bin"
-dg_sonicoverture_gamescope_args: "-W 3840 -H 2160 -S integer -f"
+dg_sonicoverture_gamescope_args: "-W 3840 -H 2160 -S integer -f --framerate-limit 60"
 
 dg_sonicoverture_winebus_registry:
   - { name: DisableHidraw, value: 1 }

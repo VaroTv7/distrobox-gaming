@@ -21,7 +21,7 @@ dg_sonicdimensions_exe: "Sonic Dimensions 5.1.0.exe"
 dg_sonicdimensions_bin: "{{ dg_box_home }}/bin/sonic-dimensions"
 dg_sonicdimensions_prefix: "{{ dg_box_home }}/wineprefixes/sonic-dimensions"
 dg_sonicdimensions_wine_bin_dir: "{{ dg_pc_racing_wine_runner_root }}/wine-11.8/usr/bin"
-dg_sonicdimensions_gamescope_args: "-W 3840 -H 2160 -S integer -f"
+dg_sonicdimensions_gamescope_args: "-W 3840 -H 2160 -S integer -f --framerate-limit 60"
 
 dg_sonicdimensions_winebus_registry:
   - { name: DisableHidraw, value: 1 }

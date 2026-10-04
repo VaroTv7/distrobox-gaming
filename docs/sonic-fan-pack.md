@@ -3,6 +3,32 @@
 Three installs from the 2026-09-04 batch (`docs/dkc-recomp.md` came the same
 week — it's fan-port season).
 
+## Controller + display notes (2026-10-04)
+
+- **Wine games** all use the same WineBus recipe (DisableHidraw=1,
+  DisableInput=1, Enable SDL=1, Map Controllers=1): the 8BitDo reaches the
+  game as a single SDL/XInput device. The Clickteam games (Overture,
+  Dimensions, Moon Facility) only import **winmm.dll** (legacy joystick API)
+  — the same pad still works through Wine's shared bus, and keyboard + pad
+  are live at the same time in these games by design (prompts may show
+  keyboard icons even while the pad works).
+- **Clickteam games run at gamescope's 240 Hz** under Wine (their own frame
+  limiter doesn't engage), which makes "button held" conditions fire
+  multiple times per physical press — e.g. Dimensions' tutorial dialog
+  advancing twice on one A press. Fix: `--framerate-limit 60` added to
+  `dg_*_gamescope_args` for Overture, Dimensions and Moon Facility (they are
+  60 fps-designed 2D games, so the cap is visually lossless). If a dialog
+  still double-advances, the next lever is `Map Controllers=0` in that
+  game's prefix.
+- **Max-settings audit**: Dimensions and Moon Facility have no exposed
+  resolution/quality config worth forcing (2D pixel games; Moon's
+  `Data/Data.ini` already ships SFX/BGM at 100, and its `Fullscreen=0` +
+  gamescope integer scaling is the crispest path — do NOT set
+  `Fullscreen=1`). Rush Rerun (Unity) takes the gamescope 4K display
+  natively and keeps quality in its in-game menu (no prefs written until
+  first launch; nothing safe to pre-seed).
+
+
 ## Sonic 3 A.I.R. (`install_sonic3air`)
 
 [Eukaryot/sonic3air](https://github.com/Eukaryot/sonic3air) — "Angel Island
