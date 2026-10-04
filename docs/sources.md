@@ -23,6 +23,7 @@ data are provided or linked here** — recomps and hacks need your own legal dum
 | Banjo-Kazooie (Lighthouse) | libultraship PC port (HarbourMasters) | [HarbourMasters/Lighthouse](https://github.com/HarbourMasters/Lighthouse) · [doc](lighthouse.md) |
 | Metroid Prime Hunters Recompiled | NDS recomp (last Linux build) | [mstan/MetroidPrimeHuntersRecomp](https://github.com/mstan/MetroidPrimeHuntersRecomp) · [doc](mph-recomp.md) |
 | Wave Race 64 Recompiled | RT64 recomp (Windows build/Wine) | [elliotttate/wave-race-64-recomp](https://github.com/elliotttate/wave-race-64-recomp) · [doc](waverace-recomp.md) |
+| Doom 64 RT | Path-traced Doom 64: Retribution (gzdoom-rt + RTGL1), native Linux AppImage | [acolomba/doom64-rt](https://github.com/acolomba/doom64-rt) · [upstream](https://github.com/jlrouzies-fr/doom64-rt) · [doc](doom64-rt.md) |
 | Pilotwings 64: Recompiled | N64Recomp + RT64 native Linux build | [danielgomesvieira2000/pilotwings-64-recomp](https://github.com/danielgomesvieira2000/pilotwings-64-recomp) · [doc](pilotwings-recomp.md) |
 | Conker's Bad Fur Day: Recompiled | N64Recomp + RT64 native Linux build | [sciaschi/CBFD-Recompiled](https://github.com/sciaschi/CBFD-Recompiled) · [doc](cbfd-recomp.md) |
 | DKR-R (Diddy Kong Racing Recompiled) | N64Recomp + RT64 native Linux AppImage | [ThatGuyMcd/DKR-R](https://github.com/ThatGuyMcd/DKR-R) · [doc](dkr-r.md) |
