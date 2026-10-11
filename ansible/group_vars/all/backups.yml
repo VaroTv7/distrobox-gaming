@@ -17,7 +17,7 @@
 
 # Parent for save backups on the QNAP CHAD share (moved 2026-10-07 off the
 # degraded Synology pool; the restic machine repos live beside it).
-dg_save_backup_nas_root: /mnt/chad/GIGACHAD/restic
+dg_save_backup_nas_root: /mnt/chad/TERACHAD/restic
 
 dg_backup_root: "{{ dg_save_backup_nas_root }}/dg-save"
 
