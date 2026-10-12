@@ -181,6 +181,16 @@ bind mount are untouched.
   reinstalls the cached binary:
   `cd /tmp && git clone https://aur.archlinux.org/<pkg>.git && cd <pkg> && makepkg -srci --noconfirm`
   (rebuild `freeimage` first for ES-DE).
+- **`freeimage` and jxrlib 1.4.4 (2026-10-12).** The AUR `freeimage`
+  3.18.0-24 patch still adds `-I/usr/include/jxrlib`, but jxrlib moved its
+  headers under `/usr/include/libjxr/`. If its source build stops at
+  `JXRGlue.h: No such file or directory`, update the local PKGBUILD's
+  `prepare()` to replace that Makefile include flag with
+  `$(shell pkg-config --cflags libjxr)`, and change its `JXRVersion.h` guard
+  to `/usr/include/libjxr/glue/JXRVersion.h`. Then run
+  `makepkg -srci --noconfirm` in the `freeimage` AUR source directory, rebuild
+  `emulationstation-de` from source, and repeat the soname sweep. This is a
+  local AUR-cache workaround; a later `yay` refresh may overwrite it.
 - **Wine bumps can break behavior, not just linkage.** wine 11.18's "fix
   monitor DPI awareness" made DPI-aware apps (Avalonia: Xenia Manager) honor
   the prefix `LogPixels`, and the pinned 192 suddenly rendered the UI at 2x
