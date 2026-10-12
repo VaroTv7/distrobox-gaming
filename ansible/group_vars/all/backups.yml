@@ -15,9 +15,11 @@
 # !!! When you install a NEW emulator or game, ADD its save path(s) here. !!!
 # (See docs/save-backups.md and the CLAUDE.md note.)
 
-# Parent for save backups on the QNAP CHAD share (moved 2026-10-07 off the
-# degraded Synology pool; the restic machine repos live beside it).
-dg_save_backup_nas_root: /mnt/chad/TERACHAD/restic
+# Parent for save backups. Moved 2026-10-11 from the QNAP
+# (/mnt/chad/TERACHAD/restic) to the rebuilt Synology GIGACHAD, to rebalance
+# capacity: the QNAP pool was ~85 TB used while the new Synology pool was
+# nearly empty. The restic machine repos live beside it.
+dg_save_backup_nas_root: /mnt/gigachad/restic
 
 dg_backup_root: "{{ dg_save_backup_nas_root }}/dg-save"
 

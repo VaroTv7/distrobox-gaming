@@ -9,7 +9,7 @@ the NAS and restores them on demand.
 
 ## Where it goes
 
-`dg_backup_root` (default **`/mnt/chad/TERACHAD/restic/dg-save`** on the QNAP,
+`dg_backup_root` (default **`/mnt/gigachad/restic/dg-save`** on the Synology,
 = `{{ dg_save_backup_nas_root }}/dg-save`; moved off the degraded Synology
 2026-10-07) — one subdirectory per save set. Override in
 `host_vars/localhost.yml` if your NAS differs. The old Synology copy remains
