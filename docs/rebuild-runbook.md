@@ -208,13 +208,20 @@ scripts/check-box-sonames.sh
 #    these. If OUTDATED, bump the pin (asset name + version + sha256 from the
 #    GitHub asset digest) in ansible/group_vars/all/<emu>.yml and re-run the role.
 scripts/check-emulator-updates.sh                      # rpcs3, xemu
-cd ansible && ansible-playbook install-rpcs3.yml       # when rpcs3 is outdated
-cd ansible && ansible-playbook install-xemu.yml        # when xemu is outdated
+(cd ansible && ansible-playbook install-rpcs3.yml)     # when rpcs3 is outdated
+(cd ansible && ansible-playbook install-xemu.yml)      # when xemu is outdated
 
 # 4. SELF-UPDATING emulators — their roles always fetch the latest upstream
 #    release, so just re-run them (close the shadPS4 GUI / Xenia Manager first).
-cd ansible && ansible-playbook refresh-shadps4.yml     # latest shadPS4 Pre-release (+ QtLauncher)
-cd ansible && ansible-playbook install-xenia.yml       # latest Xenia Manager
+(cd ansible && ansible-playbook refresh-shadps4.yml)   # latest shadPS4 Pre-release (+ QtLauncher)
+(cd ansible && ansible-playbook install-xenia.yml)      # latest Xenia Manager
+
+# 5. GitHub-backed PC games in the rendered OGM catalog — report-only.
+#    CANDIDATE means a release tag differs from the group_vars pin; inspect
+#    platform assets and game-specific notes before updating its vars and
+#    running the focused install playbook. REVIEW means a moving Git ref or
+#    latest-release installer has no comparable release pin; inspect it too.
+python3 scripts/check-github-game-updates.py             # run from repo root
 ```
 
 Note: `refresh-shadps4.yml` bundles the shadPS4 config seed, whose "is shadPS4
@@ -223,9 +230,17 @@ still updates; the guard refuses *before* editing `config.toml`, so nothing is
 left half-written. Re-run `reset-configs.yml --tags configs` while idle if you
 want the config re-seeded.
 
-Game ports / recomps / mods pinned by release tag are a **separate** per-game
-concern (the periodic "ports update sweep"), not part of routine box
-maintenance — bump those deliberately, one game at a time.
+The game sweep checks every rendered `port`, `decomp`, `recomp`, `fangame`,
+`wine`, and `arcade` entry with `X-OGM-GitHub`. It reads pinned versions from
+`group_vars` and queries GitHub releases, including prereleases in the pinned
+channel; rolling nightly/devel/test tags do not replace a stable pin. It reports
+possible updates without changing game files or saves; `NO_RELEASE` means the
+repository publishes no matching GitHub release, and `ERROR` needs a retry.
+For source checkouts and auto-updating installers, `REVIEW` is intentionally
+manual because a GitHub release tag alone cannot establish the installed
+revision. Update each candidate through its focused playbook after checking
+Linux/Windows assets, checksums, and the game's setup notes. GitHub Actions
+artifacts, non-GitHub downloads, and mods are outside this release check.
 
 ## Safety
 

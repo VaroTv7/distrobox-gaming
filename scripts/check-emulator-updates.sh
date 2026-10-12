@@ -16,8 +16,8 @@
 #
 # NOT covered here (by design): shadps4 and xenia-manager self-update to the
 # latest upstream release when their roles run — just re-run them as part of the
-# procedure (refresh-shadps4.yml, install-xenia.yml). Game ports/recomps/mods
-# are the separate, per-game "ports update sweep", not routine box maintenance.
+# procedure (refresh-shadps4.yml, install-xenia.yml). GitHub-backed PC games
+# are checked by check-github-game-updates.py; mods need their own review.
 #
 # See docs/rebuild-runbook.md ("Updating the box").
 set -eu

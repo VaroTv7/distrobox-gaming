@@ -54,7 +54,7 @@ data are provided or linked here** — recomps and hacks need your own legal dum
 | Sonic Classic (Rev 03.5) | Classic-Sonic fan game, Clickteam MMF2 (Wine) | fan game (no official page) · [doc](sonic-fan-pack.md) |
 | Project Reignition | Secret Rings fan remake (Godot) | [GameJolt](https://gamejolt.com/games/project_reignition/1082591) · [doc](project-reignition.md) |
 | Mega Man X Regenesis | Godot 4 fan game | [itch.io](https://mmxregenesis.itch.io/mega-man-x-regenesis) · [doc](mmx-regenesis.md) |
-| Star Fox Enhanced | SNES Star Fox port (UltraStarFox) | [kandowontu/starfox-enhanced](https://github.com/kandowontu/starfox-enhanced) · [doc](starfox-enhanced.md) |
+| Star Fox Enhanced | SNES Star Fox port (UltraStarFox) | [kandowontu2/starfox-enhanced](https://github.com/kandowontu2/starfox-enhanced) · [doc](starfox-enhanced.md) |
 | SMB Remastered | Super Mario Bros. remake (Godot) | [JHDev2006/…-Remastered-Public](https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public) · [doc](smb-remastered.md) |
 | SMW Remastered | Super Mario World remake (Godot) | [JHDev2006/…-Remastered-Public](https://github.com/JHDev2006/Super-Mario-World-Remastered-Public) · [doc](smw-remastered.md) |
 | OpenBOR | Beat-'em-up engine (SoR: TiJ) | [DCurrent/openbor](https://github.com/DCurrent/openbor) · [doc](openbor.md) |
