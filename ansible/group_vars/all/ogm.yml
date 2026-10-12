@@ -100,6 +100,11 @@ dg_ogm_games:
     github: "{{ dg_7th_heaven_release_url | regex_replace('^https://(api\\.)?github\\.com/(repos/)?([^/]+/[^/]+?)(\\.git)?(/.*)?$', '\\3') }}"
 
   # ── Ports / source reimplementations ─────────────────────────────
+  - desktop_id: gaming-opensc2k
+    id: opensc2k
+    category: port
+    sgdb_query: "SimCity 2000"
+    github: "{{ dg_opensc2k_repo }}"
   - desktop_id: gaming-ship-of-harkinian
     id: ship-of-harkinian
     category: port
