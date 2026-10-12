@@ -98,6 +98,23 @@ Before committing Ansible changes, run syntax checks for touched playbooks and
 validate rendered `.desktop` files. For idempotent roles, rerun the playbook and
 confirm the second run reports no unexpected changes.
 
+## Temporary Resources & Cleanup
+
+Track temporary files, extraction directories, test profiles, source checkouts,
+and Docker resources created while working. After verification, remove scratch
+resources that the playbook, a future rebuild, or the user will not use. Check
+the exact path and its contents before removal; never clean by a broad glob.
+When adding an installer, keep large downloads or extracted copies only if the
+role uses them on later runs or they are needed to reproduce the install.
+
+This host runs containers and build jobs for other projects. Inspect Docker
+containers, images, volumes, and build cache before cleanup, and remove only
+resources known to have been created for this task and no longer in use. Never
+run blanket `docker system prune`, `docker volume prune`, or remove the
+`gaming` distrobox as routine cleanup. Preserve game sources, installed files,
+saves, active containers, and shared caches. Report what was removed and what
+was retained when storage use is material.
+
 ## Commit & Pull Request Guidelines
 
 Commits use concise imperative messages, such as `Add Sonic P-06 install role`.
