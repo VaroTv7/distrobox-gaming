@@ -14,6 +14,7 @@ dg_cbfd_tarball_sha256: "ec1437a3cf3488c53891c36239c247c8aacb19568512a7b306a28a6
 dg_cbfd_root: "{{ dg_roms_final_root }}/PC/cbfd-recomp"
 dg_cbfd_tarball: "{{ dg_cbfd_root }}/ConkerRecompiled-V{{ dg_cbfd_version }}-Linux.tar.gz"
 dg_cbfd_install_dir: "{{ dg_box_home }}/tools/cbfd-recomp"
+dg_cbfd_config_dir: "{{ dg_box_home }}/.config/ConkerRecompiled"
 dg_cbfd_exe: ConkerRecomp
 
 # ROM: Conker's Bad Fur Day (USA) ONLY (z64 sha1

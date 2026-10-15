@@ -162,6 +162,18 @@
 # dg_gow3_pc_game_dir: "/path/to/CUSA01623"  # contains eboot.bin and sce_module/
 # dg_azimuth_game_dir: "/path/to/Anthem_1.0.0.64_x64__8wekyb3d8bbwe"
 # dg_azimuth_proton: "/path/to/GE-Proton/proton"
+# dg_nebula_game_image: "/path/to/Super Mario Galaxy (USA) (En,Fr,Es).iso"  # RMGE01 revision 0; NKit accepted
+# dg_nebula_compile_jobs: 4
+# dg_dekui_rom: "/path/to/decrypted/Majora's Mask 3D USA Rev 1.cci"
+# dg_dekui_controller_guid: "your-SDL-controller-GUID"
+# dg_dekui_resolution_factor: 10
+# dg_fukami_disc_cue: "/path/to/Ridge Racer V (USA).cue"
+# dg_fukami_disc_bin: "/path/to/Ridge Racer V (USA).bin"
+# PC port display baseline (configure-pc-ports.yml, after first launch creates
+# each game's settings file). Defaults match a 3840x2160 display and RTX 5090.
+# dg_pc_port_target_width: 3840
+# dg_pc_port_target_height: 2160
+# dg_pc_port_unleashed_fps: 120
 
 # Atari 2600/5200/7800/Lynx/800 ES-DE systems (off by default; see docs/atari.md).
 # Enable, then re-run configure_esde (site.yml --tags esde).

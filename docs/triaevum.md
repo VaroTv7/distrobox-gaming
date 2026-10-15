@@ -45,6 +45,10 @@ Ocarina of Time 3D").
 
 - **Play:** `bin/triaevum` (opens on DP-1; 8BitDo via SDL; F1 = settings,
   F2 = toggle added effects).
+- **Display baseline:** `configure-pc-ports.yml` updates both the renderer JSON
+  and the launch profile to 3840×2160 borderless, 90 Hz visual interpolation
+  and 4× MSAA once. The 30 Hz game simulation is unchanged. A scoped launch
+  opened a 4K-sized window; visual quality in gameplay still needs checking.
 - **One-time setup (fresh install):** `triaevum setup` runs `TriAevumForge.exe`
   — select the decrypted OoT 3D `.cci`; it extracts → prepares → activates the
   bundled precompiled title and downloads the TopScreen texture pack (needs

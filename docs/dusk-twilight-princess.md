@@ -15,6 +15,11 @@ cd /mnt/data/Projects/distrobox-gaming/ansible
 ansible-playbook install-dusk.yml
 ```
 
+After its first launch creates `config.json`, run
+`ansible-playbook configure-pc-ports.yml` once for fullscreen on the 4K display.
+The existing Auto internal resolution, unlimited frame interpolation, 240 FPS
+cap and native controller settings are preserved.
+
 ## What the playbook does
 
 1. Hits GitHub's latest-release API for `TwilitRealm/dusklight`, picks

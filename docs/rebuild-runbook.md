@@ -62,12 +62,15 @@ ansible-playbook site.yml --tags m2emulator  # optional Sega Model 2 Emulator (W
 ansible-playbook install-model1.yml          # optional Sega Model 1 (Wanszai + MAME)
 ansible-playbook install-sega-rally.yml      # optional Sega Rally HD (Wanszai, Model 2)
 ansible-playbook site.yml --tags sonic_p06   # optional Sonic Project '06 setup
+ansible-playbook configure-pc-ports.yml      # after optional PC ports have created settings files
 ansible-playbook site.yml --tags configure   # apply configs, desktop entries, ES-DE
 ansible-playbook site.yml --tags verify      # post-setup assertions
 ```
 
 `configure` renders desktop entries only. Run `scripts/install-host-launchers.sh`
 from the repository root on the host to install or refresh Walker menu entries.
+The PC port settings sweep is one-time per installed port and preserves later
+in-game changes; see [PC port display and controller baseline](pc-port-settings.md).
 
 ### NexusMods mod-set roles (per-game, opt-in)
 

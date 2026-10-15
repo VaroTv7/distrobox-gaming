@@ -41,6 +41,10 @@ selects `EXPERIENCE` (Original / Star Fox EX), pace, render FPS, display mode,
 renderer (GPU default), MSU-1, rumble, and controller remapping. **8BitDo
 works natively** (SDL, with rumble). **Select+Start exits.** Saves live in
 `Documents/Star Fox Enhanced/` (EX SRAM: `starfox-ex.srm`).
+`configure-pc-ports.yml` sets a one-time 120 FPS presentation and heavy AA,
+enhanced graphics and medium model smoothing. The existing render scale is
+already the maximum 4× supported by this installed release; its rumble setting
+is preserved.
 
 Updating: bump `dg_sfe_version` + `dg_sfe_asset_sha256` (from the release
 `SHA256SUMS.txt`), stage the new zip on the NAS, re-run (extract is

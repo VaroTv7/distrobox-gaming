@@ -258,6 +258,21 @@ dg_ogm_games:
     sgdb_query: "Forza Horizon 2"
     web_url: "{{ dg_azimuth_web_url }}"
     update_regex: 'Version ([0-9]+[.][0-9]+[.][0-9]+)'
+  - desktop_id: gaming-nebula-galaxy
+    id: nebula-galaxy
+    category: recomp
+    sgdb_query: "Super Mario Galaxy"
+    github: "{{ dg_nebula_repo }}"
+  - desktop_id: gaming-dekui-mm3d
+    id: dekui-mm3d
+    category: port
+    sgdb_query: "The Legend of Zelda: Majora's Mask 3D"
+    github: "{{ dg_dekui_repo }}"
+  - desktop_id: gaming-fukami-rrv
+    id: fukami-rrv
+    category: recomp
+    sgdb_query: "Ridge Racer V"
+    github: "{{ dg_fukami_repo }}"
   - desktop_id: gaming-sm64ds-port
     id: sm64ds-port
     category: port

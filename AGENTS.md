@@ -85,6 +85,28 @@ per-game virtual controller mapping over ad hoc registry toggles when modern
 controller triggers show up as permanently pressed axes. Document each game's
 controller policy in `docs/pc-racing.md`.
 
+## PC Port, Decompilation, and Recompilation Defaults
+
+For every PC port, decompilation, or recompilation, inspect settings that can be
+edited outside the running game and configure them as part of installation when
+practical. This machine has an RTX 5090 and 4K displays: target 3840×2160 output,
+high or ultra graphics, and the highest stable frame rate the game supports.
+Check the actual FPS cap, interpolation, VSync, and frame-pacing settings, and
+select at least 60 FPS or a higher stable target when supported. Distinguish
+the configured cap from measured gameplay FPS. Respect engine timing caps;
+do not use an unpaced/debug mode just to report a higher frame rate or enable
+competing VSync and pacer controls that cause uneven cadence or game-speed
+changes. Keep these choices reproducible in `dg_*` variables or role
+tasks, preserve saves and existing user customization, and document any setting
+that can only be changed inside the game.
+
+Always provide gamepad support. Prefer the game's native controller input;
+select a working controller profile and configure buttons, sticks, triggers,
+and rumble outside the game when possible. If native support is absent, provide
+an appropriate controller-to-keyboard mapping. Check that the installed launcher
+can see the connected pad, test actual input when feasible, and state clearly
+when input could not be verified. Document the controller policy with the game.
+
 ## Coding Style & Naming Conventions
 
 Use YAML with two-space indentation. Prefix project variables with `dg_`.
