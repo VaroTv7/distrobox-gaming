@@ -27,6 +27,7 @@
     - { role: install_pc_racing,         tags: [pc_racing, never] }
     - { role: install_opencmr2,          tags: [opencmr2, never] }
     - { role: install_gow3_pc,           tags: [gow3_pc, never] }
+    - { role: install_rygt,              tags: [rygt, never] }
     - { role: install_azimuth,           tags: [azimuth, never] }
     - { role: install_nebula,            tags: [nebula, never] }
     - { role: install_dekui,             tags: [dekui, never] }
@@ -46,6 +47,7 @@
     - { role: install_roadrash64_recomp,  tags: [roadrash64, never] }
     - { role: install_fzero_recomp,      tags: [fzero_recomp, never] }
     - { role: install_driveclub_shader_patch, tags: [driveclub, never] }
+    - { role: install_driveclub_recomp,     tags: [driveclub_recomp, never] }
     - { role: install_perfect_dark,      tags: [perfect_dark, never] }
     - { role: install_project_reignition, tags: [project_reignition, never] }
     - { role: install_sonic3air,         tags: [sonic3air, never] }

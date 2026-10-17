@@ -252,12 +252,27 @@ dg_ogm_games:
     category: port
     sgdb_query: "God of War III Remastered"
     github: "{{ dg_gow3_pc_repo }}"
+  - desktop_id: gaming-rygt-gt-sport
+    id: rygt-gt-sport
+    category: port
+    sgdb_query: "Gran Turismo Sport"
+    github: "{{ dg_rygt_repo }}"
   - desktop_id: gaming-azimuth-fh2
     id: azimuth-fh2
     category: port
     sgdb_query: "Forza Horizon 2"
     web_url: "{{ dg_azimuth_web_url }}"
     update_regex: 'Version ([0-9]+[.][0-9]+[.][0-9]+)'
+  - desktop_id: gaming-azimuth-fh2-infinity
+    id: azimuth-fh2-infinity
+    category: port
+    sgdb_query: "Forza Horizon 2"
+    github: anarqz/ForzaInfinity
+  - desktop_id: gaming-driveclub-recomp
+    id: driveclub-recomp
+    category: recomp
+    sgdb_query: "DriveClub"
+    github: "{{ dg_dcr_repo }}"
   - desktop_id: gaming-nebula-galaxy
     id: nebula-galaxy
     category: recomp

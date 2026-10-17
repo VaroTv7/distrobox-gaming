@@ -1,0 +1,58 @@
+# DriveClub Recomp
+
+[OverkillLabs3/driveclub-recomp](https://github.com/OverkillLabs3/driveclub-recomp)
+v0.2.1 is staged as an optional Windows runtime alongside the working shadPS4
+Driveclub installation. The pinned release ZIP is stored under
+`dg_roms_final_root/PC/`; `install-driveclub-recomp.yml` extracts it to
+`dg_box_home/tools/driveclub-recomp` without copying or changing game data.
+
+The US PS4 title `CUSA00093` is now present as a base 1.00 PKG and a 1.28
+update PKG under `dg_dcr_source_root/packages/`. Both were extracted to
+separate `dg_dcr_source_root/dump/` subdirectories. Each PKG's original
+`param.sfo` was copied from its metadata table into the matching dump's
+`sce_sys/` directory because the PKG extractor omitted it. The base dump has
+`game000.dat`; the update dump has `eboot.bin` and reports `APP_VER=01.28`.
+The role recognizes them and renders a **DriveClub Recomp** desktop entry.
+The original EU `CUSA00003` shadPS4 installation remains untouched.
+
+This 1.28 update is explicitly labeled **Patched 60FPS**, a repack. Upstream
+tested CUSA00093 v1.28 but says repacked dumps are untested. The release
+requires Windows 10/11. A controlled `driveclub-recomp --play` smoke test
+through GE-Proton11-1 prepared the executable, started `DriveClubGame.exe`,
+opened a `DRIVECLUB™` window, and logged the RTX 5090 Vulkan device. Gameplay,
+frame rate, rendering quality, saves, and controller input still need a
+hands-on check.
+
+The source path defaults to `dg_dcr_source_root`, derived from
+`dg_roms_final_root`. Override it in `host_vars/localhost.yml` if moving the
+dump. The role points the launcher at separate `dg_dcr_base_dir` and
+`dg_dcr_update_dir` and seeds its settings only when absent. To reapply:
+
+```sh
+cd ansible
+ansible-playbook install-driveclub-recomp.yml
+```
+
+The default launcher settings request 4K output and 60 FPS with deltatime,
+show the FPS counter, and set `unlock=1` for DLC content. The internal render
+resolution remains the game's default because the 1440p-and-higher internal
+patches are marked `[DEPTH BUG]` upstream. These are configured targets, not
+measured gameplay results. The recomp builds its DLC overrides from the game's
+vehicle, tour and livery lists when Play is pressed; its own source says the
+toggle is on by default and does not modify the game dump. The controlled
+launch produced all three override files (`newdata/vehicles.csv`,
+`data/databases/dc.tour`, and `liveryeditor/assets/assets.txt`) under
+`data/unlock/`, confirming that DLC unlock preparation completed. Actual
+in-game availability remains unverified. The archive also
+contained 117 small `CUSA00093` DLC entitlement PKGs under
+`dg_dcr_source_root/packages/dlc/`, retained for PS4 use but not needed by the
+recomp's built-in unlock.
+
+The recomp has native gamepad input for Xbox, PlayStation, Switch Pro and
+8BitDo controllers, but controller input has not been tested on this host.
+The PCMRace article's “mods” refers to the recomp's loose-file `mods/`
+override mechanism; it does not provide a separate mod pack. The role creates
+that folder and preserves it, as well as settings, logs and saves on future
+updates. The five redundant multipart RAR files were removed after verified
+extraction and decryption, recovering about 36 GB; the two source PKGs and
+decrypted dumps remain on the NAS.

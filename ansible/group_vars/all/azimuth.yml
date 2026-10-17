@@ -1,13 +1,33 @@
 ---
 # Azimuth: Xbox One Forza Horizon 2 compatibility wrapper through Proton.
-dg_azimuth_version: 0.9.8
+dg_azimuth_version: 0.9.10
 dg_azimuth_web_url: https://almost-there-games.itch.io/azimuth
 dg_azimuth_zip: "{{ dg_roms_final_root }}/PC/azimuth-windows-{{ dg_azimuth_version }}.zip"
-dg_azimuth_zip_sha256: 70703651272cdc9bf91f9a2e803ec88a8af150a3f18e239289d6baec846e53c3
+dg_azimuth_zip_sha256: ad6ce5b3a84246dbd1b4c0612bfc8c76923c045d6dfd22fe12b0f1b9440770e1
 dg_azimuth_supported_game_version: 1.0.0.64
 dg_azimuth_game_dir: "{{ dg_roms_final_root }}/xboxone/Anthem_1.0.0.64_x64__8wekyb3d8bbwe"
 dg_azimuth_install_dir: "{{ dg_box_home }}/tools/azimuth"
 dg_azimuth_launcher: "{{ dg_box_home }}/bin/azimuth-fh2"
-dg_azimuth_proton: "{{ ansible_env.HOME }}/.steam/steam/compatibilitytools.d/GE-Proton11-1/proton"
-dg_azimuth_steam_root: "{{ ansible_env.HOME }}/.steam/steam"
+dg_azimuth_proton: "{{ ansible_facts.env.HOME }}/.steam/steam/compatibilitytools.d/GE-Proton11-1/proton"
+dg_azimuth_steam_root: "{{ ansible_facts.env.HOME }}/.steam/steam"
 dg_azimuth_compatdata: "{{ dg_azimuth_install_dir }}/.compatdata"
+dg_azimuth_extra_options_version: 0.2.98
+dg_azimuth_extra_options_repo: RokkuDayo/ForzaHorizon2_ExtraOptions
+dg_azimuth_extra_options_zip: "{{ dg_roms_final_root }}/PC/FH2_Extra_Options_{{ dg_azimuth_extra_options_version }}-release.zip"
+dg_azimuth_extra_options_sha256: d3b9db715416abd8efef4048445a9edbe22d333ba0267fb48fb255dfab000c38
+# One-time display baseline after Azimuth creates its UTF-16 settings file.
+# Later user changes are preserved by the marker in the install directory.
+dg_azimuth_resolution: 2160
+dg_azimuth_graphics: ultra
+dg_azimuth_frame_rate: 60
+dg_azimuth_frame_pacing: real-time
+# Optional FH2 radio and online client. Archives are retained for rebuilds.
+dg_azimuth_radio_version: 0.1.5
+dg_azimuth_radio_zip: "{{ dg_roms_final_root }}/PC/FH2-Streaming-Radio-v{{ dg_azimuth_radio_version }}.zip"
+dg_azimuth_radio_sha256: 8d839f18bec917f6ea049f7530f082f2dfd72309eafe1bab4171806dde2a95fc
+dg_azimuth_infinity_version: 0.4.4
+dg_azimuth_infinity_zip: "{{ dg_roms_final_root }}/PC/ForzaInfinity-v{{ dg_azimuth_infinity_version }}.zip"
+dg_azimuth_infinity_sha256: 8d991fa3fa978e1352b9bc9d1c5da8db9a53308c97b4b3857d7229dd85663af2
+dg_azimuth_infinity_install_dir: "{{ dg_box_home }}/tools/azimuth-infinity"
+dg_azimuth_infinity_launcher: "{{ dg_box_home }}/bin/azimuth-fh2-infinity"
+dg_azimuth_infinity_server: https://infinity.anarqz.dev

@@ -115,7 +115,9 @@ Current per-game controller handling:
   conflict with the Tweaks loader.
 - Sega Rally Revo uses `Map Controllers=1`, because this game needs Wine's
   SDL-backed XInput device to see the 8BitDo controller.
-- Sega Rally 2 is not managed here — it is a Wine dead-end; see
+- Sega Rally 2's 25th-Anniversary repack is not managed here. The original PC
+  releases now have a Wine/Proton-capable patcher, but our repack's executable
+  fails its exact build check; see
   https://github.com/akitaonrails/distrobox-gaming/issues/3 .
 
 If `evdev-joystick --listdevs` only shows the Moonlander keyboard and SDL sees
@@ -641,11 +643,33 @@ main-menu path before the offline DirectX runtime was installed.
 
 ## Sega Rally 2
 
-Not managed here — a Wine dead-end on this box (the game's own MGameD3D renderer
-null-derefs; verified with the 1.9.0 and 2.0.0 25th-Anniversary repacks). The
+Not managed here — the game's own MGameD3D renderer null-derefs with the 1.9.0
+and 2.0.0 25th-Anniversary repacks on this box. The
 2.0.0 installer payload (SHA-256 verified) is staged on the NAS at
 `ROMS_FINAL/PC/Sega Rally 2 ~ 25th Anniversary Edition 2.0.0/` for a future
 retry. Full attempt log + test matrix: https://github.com/akitaonrails/distrobox-gaming/issues/3
+
+A 2026-10-10 issue comment pointed to
+[sr2-patcher](https://github.com/pairomaniac/sr2-patcher). It applies several
+`MGameD3D.dll` fixes and explicitly supports Wine/Proton. On 2026-10-17 we
+reinstalled the local 2.0.0 repack into a temporary prefix: its
+`MGameD3D.dll` MD5 matches the patcher's supported file exactly
+(`201a9cc68096231eebcd602a65b7af6e`), but its `SEGA RALLY 2.EXE` is
+1,550,848 bytes, MD5 `309f04622862cf5d8d75f3cdf56b0839`. None of the
+patcher's supported retail PC builds has that executable fingerprint, and its
+build check refuses unknown or modified files before patching. No original PC
+disc image was found in the local ROMS_FINAL collection. The 2.1.0 Anniversary
+installer was also unpacked into a disposable prefix on 2026-10-17 and produced
+the same executable and renderer DLL hashes. If a supported original
+PC release becomes available, test the patcher on a separate install rather
+than applying its binary offsets to the Anniversary executable.
+
+The later `ROMS_FINAL/PC/SEGA RALLY 2.exe` download is a 632 MB GAME-TIME
+"Portable Edition" packaged with Cameyo VOS virtualization, not a retail PC
+disc image or an accessible original game executable. The patcher cannot
+identify its build from that wrapper. A supported original PC release is still
+needed, preferably the EU retail disc labeled `EI-1183-1` or the US retail
+disc labeled `40924-0919`.
 
 Play **Sega Rally Championship HD** (`install_sega_rally`) or **Sega Rally Revo**
 (`sega-rally-revo`) instead.

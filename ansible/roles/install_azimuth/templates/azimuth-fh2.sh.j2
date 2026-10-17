@@ -21,6 +21,7 @@ export SteamGameId=0
 export VK_ICD_FILENAMES="${VK_ICD_FILENAMES:-/usr/share/vulkan/icd.d/nvidia_icd.json}"
 export __NV_PRIME_RENDER_OFFLOAD=1
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export WINEDLLOVERRIDES="winmm=n,b;d3dcompiler_47=n,b${WINEDLLOVERRIDES:+;$WINEDLLOVERRIDES}"
 mkdir -p "$STEAM_COMPAT_DATA_PATH"
 cd "{{ dg_azimuth_install_dir }}"
 exec "{{ dg_azimuth_proton }}" run "{{ dg_azimuth_install_dir }}/azimuth.exe" "$@"

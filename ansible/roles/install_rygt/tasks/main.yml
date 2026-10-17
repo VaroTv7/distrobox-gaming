@@ -1,0 +1,130 @@
+---
+- name: Check RyGT game, firmware and font inputs
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - "{{ dg_rygt_game_dir }}/eboot.bin"
+    - "{{ dg_rygt_game_dir }}/gt00.vol"
+    - "{{ dg_rygt_game_dir }}/gt.idx"
+    - "{{ dg_rygt_game_dir }}/sce_sys/param.sfo"
+    - "{{ dg_ps4_firmware_modules }}/libSceFont.sprx"
+    - "{{ dg_rygt_font2_source }}"
+  register: _rygt_inputs
+
+- name: Require the local decrypted game and firmware
+  ansible.builtin.assert:
+    that: _rygt_inputs.results | selectattr('stat.exists') | list | length == 6
+    fail_msg: Set dg_rygt_game_dir, dg_ps4_firmware_modules and dg_rygt_font2_source to the owned decrypted assets.
+
+- name: Create RyGT directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ dg_rygt_cache_dir }}"
+    - "{{ dg_rygt_release_dir }}"
+    - "{{ dg_rygt_font_source }}/font"
+    - "{{ dg_rygt_update_overlay }}/sce_sys"
+    - "{{ dg_box_home }}/bin"
+
+- name: Download pinned RyGT release
+  ansible.builtin.get_url:
+    url: "{{ dg_rygt_asset_url }}"
+    dest: "{{ dg_rygt_cache_dir }}/{{ dg_rygt_asset_name }}"
+    checksum: "sha256:{{ dg_rygt_asset_sha256 }}"
+    mode: "0644"
+
+- name: Extract RyGT without duplicating the large game files
+  ansible.builtin.command:
+    argv:
+      - bsdtar
+      - -xf
+      - "{{ dg_rygt_cache_dir }}/{{ dg_rygt_asset_name }}"
+      - --strip-components
+      - '1'
+      - -C
+      - "{{ dg_rygt_release_dir }}"
+    creates: "{{ dg_rygt_release_dir }}/RyGT.exe"
+
+- name: Stage owned PS4 fonts for RyGT converter
+  ansible.builtin.copy:
+    src: "{{ dg_rygt_font2_source }}/"
+    dest: "{{ dg_rygt_font_source }}/font2/"
+    remote_src: true
+    mode: preserve
+
+- name: Install RyGT overlay preparation script
+  ansible.builtin.template:
+    src: prepare.py.j2
+    dest: "{{ dg_rygt_release_dir }}/.dg-prepare.py"
+    mode: "0644"
+
+- name: Prepare backport update overlay without touching the original dump
+  ansible.builtin.command:
+    argv:
+      - python3
+      - "{{ dg_rygt_release_dir }}/.dg-prepare.py"
+      - before
+      - "{{ dg_rygt_game_dir }}"
+      - "{{ dg_rygt_update_overlay }}"
+      - "{{ dg_rygt_release_dir }}"
+  register: _rygt_before
+  changed_when: "'changed' in _rygt_before.stdout"
+
+- name: Configure RyGT setup paths
+  ansible.builtin.template:
+    src: RyGT.ini.j2
+    dest: "{{ dg_rygt_release_dir }}/RyGT.ini"
+    mode: "0644"
+
+- name: Convert GT Sport once in the dedicated Wine prefix
+  ansible.builtin.command:
+    argv:
+      - distrobox
+      - enter
+      - "{{ dg_box_name }}"
+      - --
+      - env
+      - "WINEPREFIX={{ dg_rygt_prefix }}"
+      - WINEDEBUG=-all
+      - wine
+      - "{{ dg_rygt_release_dir }}/RyGT.exe"
+      - --setup
+    chdir: "{{ dg_rygt_release_dir }}"
+    creates: "{{ dg_rygt_release_dir }}/GTSport.exe"
+
+- name: Repair the converter's unsupported NAS junction and seed title metadata
+  ansible.builtin.command:
+    argv:
+      - python3
+      - "{{ dg_rygt_release_dir }}/.dg-prepare.py"
+      - after
+      - "{{ dg_rygt_game_dir }}"
+      - "{{ dg_rygt_update_overlay }}"
+      - "{{ dg_rygt_release_dir }}"
+  register: _rygt_after
+  changed_when: "'changed' in _rygt_after.stdout"
+
+- name: Install RyGT launcher
+  ansible.builtin.template:
+    src: rygt-gt-sport.sh.j2
+    dest: "{{ dg_rygt_launcher }}"
+    mode: "0755"
+
+- name: Render RyGT desktop entry
+  ansible.builtin.template:
+    src: rygt-gt-sport.desktop.j2
+    dest: "{{ dg_desktop_render_dir }}/gaming-rygt-gt-sport.desktop"
+    mode: "0644"
+
+- name: Install host desktop entries
+  ansible.builtin.command:
+    cmd: "{{ dg_project_root }}/scripts/install-host-launchers.sh"
+  environment:
+    DG_DESKTOP_RENDER_DIR: "{{ dg_desktop_render_dir }}"
+    DG_HOST_APPLICATIONS_DIR: "{{ dg_host_applications_dir }}"
+  register: _rygt_host_launchers
+  changed_when: >-
+    'installed ' in _rygt_host_launchers.stdout or
+    'removed stale ' in _rygt_host_launchers.stdout
