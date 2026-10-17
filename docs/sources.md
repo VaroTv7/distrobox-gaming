@@ -90,6 +90,7 @@ Patch files are **not** committed — grab them from the sites below.
 | F-Zero Community Grand Prix P1/P2/P3 (SNES, MSU-1) | [RomHack Plaza](https://romhackplaza.org/romhacks/f-zero-community-grand-prix-cgp-super-nintendo-romhack) (guest-accessible via the Download modal's signed URLs; zips archived at `ROMS_FINAL/snes/romhack-patches/`) |
 | DKC GBA colour restoration (marc_max) | [RHDN](https://www.romhacking.net/) |
 | Sonic the Hedgehog Vol.2 v1.7b (NES, Somari hack, Terwilf) | [RHDN](https://www.romhacking.net/hacks/5026/) · [CDRomance mirror](https://cdromance.org/nes-roms/sonic-the-hedgehog-vol-2-hack/) (zip archived at `ROMS_FINAL/nes/romhack-patches/`) |
+| Master System Sonic Genesis Mod, Hang-On Enhanced, and Lunar Skirmish | [Sonic](https://www.smspower.org/Hacks/SonicTheHedgehog-SMS-Genesis-Mod) · [Hang-On](https://www.smspower.org/Hacks/HangOn-SMS-Enhanced-Mod) · [Lunar Skirmish](https://www.smspower.org/Homebrew/LunarSkirmish-SMS) · [install notes](sms-master-system-hacks.md) |
 | Naming hacks cleanly in ES-DE | [doc: esde-romhack-names.md](esde-romhack-names.md) |
 
 ---
